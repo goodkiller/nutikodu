@@ -1,0 +1,99 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+	margin: 0;
+	padding: 0;
+	background-color: #000;
+}
+
+/* ---- grid ---- */
+
+.grid figure {
+	float: left;
+	background: #2D89EF;
+	width: 100px;
+	height: 100px;
+	margin: 0 2px 4px;
+	color: #FFF;
+	position: relative;
+	overflow: hidden;
+}
+
+.grid figure.clickable:after {
+	content: "";
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+	background-image: radial-gradient(circle, #000 10%, transparent 10.01%);
+	background-repeat: no-repeat;
+	background-position: 50%;
+	transform: scale(10, 10);
+	opacity: 0;
+	transition: transform .5s, opacity 1s;
+}
+.grid figure.clickable:active:after {
+	transform: scale(0, 0);
+	opacity: .2;
+	transition: 0s;
+}
+
+.grid figure .title {
+	text-align: center;
+	white-space: nowrap;
+    overflow: hidden;
+	width: inherit;
+    text-overflow: ellipsis;
+    padding: 5px;
+}
+
+
+.grid figure .body {
+	text-align: center;
+}
+
+/* 1x1 */
+.grid figure.size-1x1 .title {
+	font-size: 16px;
+	font-weight: 400;
+}
+
+.grid figure.size-1x1 .body {
+	line-height: 25px;
+	font-size: 25px;
+	font-weight: 300;
+}
+
+/* 2x2 */
+.grid figure.size-2x2 {
+	width: 200px;
+	height: 200px;
+
+.grid figure.size-2x2 .title {
+	font-size: 16px;
+	font-weight: 400;
+}
+
+.grid figure.size-2x2 .body {
+	line-height: 25px;
+	font-size: 25px;
+	font-weight: 300;
+}
+
+.grid .item-w2 {
+	width: 200px;
+}
+.grid .item-h2 {
+	height: 200px;
+}
+.grid .item-h3 {
+	height: 300px;
+}
+
+
