@@ -32,6 +32,16 @@ CREATE INDEX "IDX_DSH_ITM_ITM_ID" ON public.dashboard_items USING btrees (item_i
 
 
 
-
+-- Zway settings
 INSERT INTO settings (key) VALUES('zway_controller_addr');
 INSERT INTO settings (key,val) VALUES('zway_controller_port', 8083);
+
+-- MiLight settings
+INSERT INTO settings (key,val) VALUES('milight_file_path', '/opt/milight/');
+INSERT INTO settings (key,val) VALUES('milight_ssh_port', 22);
+INSERT INTO settings (key,val) VALUES('milight_ssh_host', 'localhost');
+INSERT INTO settings (key,val) VALUES('milight_ssh_user', 'pi');
+INSERT INTO settings (key,val) VALUES('milight_ssh_password', 'raspberry');
+
+
+

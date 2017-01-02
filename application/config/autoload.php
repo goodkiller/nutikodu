@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('zdashboard', 'zitem', 'zapi');
+$autoload['model'] = array('settings', 'zdashboard', 'zitem', 'zapi');

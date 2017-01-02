@@ -12,18 +12,46 @@ class MiLight extends VirtualDevice
 	function get_item_options( $item_info = array() ){
 
 		return array(
-			'event' => 'click'
+			'event' => 'toggle'
 		);
 	}
 
-	public function listen()
-	{
+	public function on( $item_info = array() ){
 
+		$this->CI->load->model( 'miapi' );
+
+		$status = $this->CI->miapi->send_command( 0x03 );
+
+		if( $status ){
+			$this->CI->zitem->set_value( $item_info->id, 1 );
+		}
 	}
 
+	public function off( $item_info = array() ){
+
+		$this->CI->load->model( 'miapi' );
+
+		$status = $this->CI->miapi->send_command( 0x04 );
+
+		if( $status ){
+			$this->CI->zitem->set_value( $item_info->id, 0 );
+		}
+	}
+
+	function increase( $channel = NULL ){
+		
+		$this->CI->load->model( 'miapi' );
+	}
+
+	function decrease( $channel = NULL ){
+
+		$this->CI->load->model( 'miapi' );
+
+	}
 
 	public function install()
 	{
 		// /opt/milight/
 	}
+
 }

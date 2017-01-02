@@ -28,54 +28,7 @@ class Zitems extends CI_Controller {
 	function test()
 	{
 
-		$connection = ssh2_connect('192.168.1.201', 22);
-		ssh2_auth_password($connection, 'pi', 'raspberry');
-
-	
-		$stdout = ssh2_exec($connection, 'sudo /opt/milight/openmilight');
-		$stderr = ssh2_fetch_stream($stdout, SSH2_STREAM_STDERR);
-		if (!empty($stdout)) {
-
-		$t0 = time();
-		$err_buf = null;
-		$out_buf = null;
-
-		// Try for 30s
-		do {
-
-		$err_buf.= fread($stderr, 4096);
-		$out_buf.= fread($stdout, 4096);
-
-		$done = 0;
-		if (feof($stderr)) {
-		    $done++;
-		}
-		if (feof($stdout)) {
-		    $done++;
-		}
-
-		$t1 = time();
-		$span = $t1 - $t0;
-
-		// Info note
-		echo "while (($span < 10) && ($done < 2));\n";
-
-		// Wait here so we don't hammer in this loop
-		sleep(1);
-
-		} while (($span < 10) && ($done < 2));
-
-		echo "STDERR:\n$err_buf\n";
-		echo "STDOUT:\n$out_buf\n";
-
-		echo "Done\n";
-
-		} else {
-		echo "Failed to Shell\n";
-		}
-
-
-
+		echo bin2hex(openssl_random_pseudo_bytes(1));
 	}
 
 	function get()
