@@ -11,6 +11,12 @@ class Thermostat extends VirtualDevice
 		return $item_info->last_value . '&deg;';
 	}
 
+	/**
+	 * Set thermostat value
+	 * @method  exact
+	 * @author  Marko Praakli
+	 * @date    2017-01-03
+	 */
 	function exact( $item_info = array() ){
 
 		$status = $this->CI->zapi->send_command( $item_info->address, 'exact', array( 'level' => $level ) );

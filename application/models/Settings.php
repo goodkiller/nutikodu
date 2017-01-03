@@ -8,11 +8,16 @@ class Settings extends CI_Model
 
 		parent::__construct();
 
-		// Read all settings
+		// Read all settings from database
 		$this->get_all();
 	}
 
-	// Read all settings
+	/**
+	 * Read all settings from database
+	 * @method  get_all
+	 * @author  Marko Praakli
+	 * @date    2017-01-03
+	 */
 	private function get_all()
 	{
 		$this->db->from( 'settings' );
@@ -24,6 +29,12 @@ class Settings extends CI_Model
 		}
 	}
 
+	/**
+	 * Get specific settings value by key
+	 * @method  get
+	 * @author  Marko Praakli
+	 * @date    2017-01-03
+	 */
 	public function get( $key = '' ){
 		return $this->settings[ $key ];
 	}

@@ -20,7 +20,7 @@ class MiLight extends VirtualDevice
 
 		$this->CI->load->model( 'miapi' );
 
-		$status = $this->CI->miapi->send_command( 0x03 );
+		$status = $this->CI->miapi->channel_on( 1 );
 
 		if( $status ){
 			$this->CI->zitem->set_value( $item_info->id, 1 );
@@ -31,7 +31,7 @@ class MiLight extends VirtualDevice
 
 		$this->CI->load->model( 'miapi' );
 
-		$status = $this->CI->miapi->send_command( 0x04 );
+		$status = $this->CI->miapi->channel_off( 1 );
 
 		if( $status ){
 			$this->CI->zitem->set_value( $item_info->id, 0 );
@@ -48,10 +48,4 @@ class MiLight extends VirtualDevice
 		$this->CI->load->model( 'miapi' );
 
 	}
-
-	public function install()
-	{
-		// /opt/milight/
-	}
-
 }
