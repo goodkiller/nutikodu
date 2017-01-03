@@ -6,9 +6,14 @@ class MultilevelSwitch extends VirtualDevice
 		parent::__construct();
 	}
 
+	function get_item_title( $item_info = array() ){
+		
+		return $item_info->title;
+	}
+
 	function get_item_body( $item_info = array() ){
 
-		$classes = array( __CLASS__, 'fa' );
+		$classes = array( 'fa' );
 
 		// Off
 		if( $item_info->last_value == 0 )

@@ -45,5 +45,9 @@ INSERT INTO settings (key,val) VALUES('milight_ssh_host', 'localhost');
 INSERT INTO settings (key,val) VALUES('milight_ssh_user', 'pi');
 INSERT INTO settings (key,val) VALUES('milight_ssh_password', 'raspberry');
 
+-- AccuWeather
+INSERT INTO settings (key,val) VALUES('accuweather_location_id', '131136');
+INSERT INTO settings (key,val) VALUES('accuweather_api_key', 'hoArfRosT1215');
+
 
 

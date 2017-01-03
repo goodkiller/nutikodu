@@ -8,6 +8,10 @@ class VirtualDevice
 		$this->CI =& get_instance();
 	}
 
+	function get_item_title( $item_info = array() ){
+		return '???';
+	}
+
 	function get_item_body( $item_info = array() ){
 		return '<i class="fa fa-question" aria-hidden="true"></i>';
 	}

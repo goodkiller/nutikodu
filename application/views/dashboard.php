@@ -12,6 +12,8 @@
 	<link rel="stylesheet" href="assets/css/devices/MultilevelSwitch.css" />
 	<link rel="stylesheet" href="assets/css/devices/MiLight.css" />
 	<link rel="stylesheet" href="assets/css/devices/Battery.css" />
+	<link rel="stylesheet" href="assets/css/devices/AccuWeather.css" />
+	<link rel="stylesheet" href="assets/css/devices/BinarySensor.css" />
 	<script src="assets/js/lib/jquery.min.js"></script>
 	<script src="assets/js/lib/jquery.mobile.min.js"></script>
 	<script src="assets/js/lib/tether.min.js"></script>

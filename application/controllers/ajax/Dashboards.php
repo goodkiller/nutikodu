@@ -19,6 +19,7 @@ class Dashboards extends CI_Controller {
 	{
 		$items_list = array();
 		$dynamic_methods = array(
+			'title' => 'get_item_title', 
 			'body' => 'get_item_body', 
 			'options' => 'get_item_options'
 		);

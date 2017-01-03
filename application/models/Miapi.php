@@ -110,11 +110,11 @@ class MiApi extends CI_Model
 		// Localhost "same server"
 		if( in_array( $this->settings->get( 'milight_ssh_host' ), array( 'localhost', '127.0.0.1' ) ) )
 		{
-			return $his->send_commant_via_unix( $exec_command );
+			return $this->send_commant_via_unix( $exec_command );
 		}
 		else
 		{
-			return $his->send_commant_via_ssh( $exec_command );
+			return $this->send_commant_via_ssh( $exec_command );
 		}
 	}
 
@@ -163,7 +163,7 @@ class MiApi extends CI_Model
 			log_message('error', 'Unable to connect MiLight server "' . $this->settings->get( 'milight_ssh_host' ) . ':' . $this->settings->get( 'milight_ssh_port' ) . '".');
 		}
 
-		return FALSE
+		return FALSE;
 	}
 
 	/**
@@ -176,7 +176,7 @@ class MiApi extends CI_Model
 	{
 		
 
-		return FALSE
+		return FALSE;
 	}
 
 	/**

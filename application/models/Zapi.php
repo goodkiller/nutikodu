@@ -50,14 +50,24 @@ class Zapi extends CI_Model
 	 */
 	function send_command( $device_id = '', $command = '', $query_params = array() )
 	{
-		$url = 'devices/' . $device_id . '/command/' . $command;
+		$this->load->library( 'curl' );
+
+		$url_segments = 'devices/' . $device_id . '/command/' . $command;
 
 		if( !empty($query_params) ){
-			$url .= '?' . http_build_query($query_params);
+			$url_segments .= '?' . http_build_query($query_params);
 		}
 
+		$url = $this->get_url( $url_segments );
+
+		log_message('debug', 'Sending request to ZWay API: "' . $url . '".');
+
 		// Send command
-		$response = $this->_curl_get( $url );
+		$response = $this->curl->simple_get( $url );
+
+		log_message('debug', 'ZWay API response: "' . $response . '".');
+
+		$response = json_decode( $response, TRUE );
 
 		if( $response[ 'code' ] == 200 ){
 			return TRUE;
@@ -125,33 +135,5 @@ class Zapi extends CI_Model
 		$url = preg_replace('/([^:])(\/{2,})/', '$1/', $url);
 
 		return $url;
-	}
-
-	/**
-	 * CURL GET request
-	 * @method  _curl_get
-	 * @author  Marko Praakli
-	 * @date    2017-01-03
-	 */
-	private function _curl_get( $url_segments = '' )
-	{
-		$url = $this->get_url( $url_segments );
-
-		log_message('debug', 'Sending request to ZWay API: "' . $url . '".');
-
-		$ch = curl_init();
- 
-		curl_setopt( $ch, CURLOPT_URL, $url );
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, TRUE );
-	 
-		$output = curl_exec($ch);
-	 
-		curl_close($ch);
-
-		log_message('debug', 'ZWay API response: "' . $output . '".');
-
-		$output = json_decode( $output, TRUE );
-
-		return $output;
 	}
 }
