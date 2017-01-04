@@ -6,17 +6,17 @@ class MultilevelSwitch extends VirtualDevice
 		parent::__construct();
 	}
 
-	function get_item_title( $item_info = array() ){
+	function get_item_title(){
 		
-		return $item_info->title;
+		return $this->item_info->title;
 	}
 
-	function get_item_body( $item_info = array() ){
+	function get_item_body(){
 
 		$classes = array( 'fa' );
 
 		// Off
-		if( $item_info->last_value == 0 )
+		if( $this->item_info->last_value == 0 )
 		{
 			$classes[] = 'fa-toggle-off text-muted';
 		}
@@ -30,60 +30,63 @@ class MultilevelSwitch extends VirtualDevice
 		return '<i class="' . implode( ' ', $classes ) . '" aria-hidden="true"></i>';
 	}
 
-	function get_item_options( $item_info = array() ){
-		return array(
-			'event' => 'toggle'
+	function get_body( $event_type = 'click' ){
+
+		$vars = array(
+			'item_info' => $this->item_info
 		);
+
+		return $this->CI->load->view( 'devices/' . __CLASS__ . '/body/' . $event_type, $vars, TRUE );
 	}
 
-	function on( $item_info = array() ){
+	function on(){
 		
-		$status = $this->CI->zapi->send_command( $item_info->address, 'on' );
+		$status = $this->CI->zapi->send_command( $this->item_info->address, 'on' );
 
 		if( $status ){
-			$this->CI->zitem->set_value( $item_info->id, 99 );
+			$this->CI->zitem->set_value( $this->item_info->id, 99 );
 		}
 
 		return $status;
 	}
 
-	function off( $item_info = array() ){
+	function off(){
 		
-		$status = $this->CI->zapi->send_command( $item_info->address, 'off' );
+		$status = $this->CI->zapi->send_command( $this->item_info->address, 'off' );
 
 		if( $status ){
-			$this->CI->zitem->set_value( $item_info->id, 0 );
+			$this->CI->zitem->set_value( $this->item_info->id, 0 );
 		}
 
 		return $status;
 	}
 
-	function min( $item_info = array() ){
-		return $this->CI->zapi->send_command( $item_info->address, 'min' );
+	function min(){
+		return $this->CI->zapi->send_command( $this->item_info->address, 'min' );
 	}
 
-	function max( $item_info = array() ){
-		return $this->CI->zapi->send_command( $item_info->address, 'max' );
+	function max(){
+		return $this->CI->zapi->send_command( $this->item_info->address, 'max' );
 	}
 
-	function increase( $item_info = array() ){
-		return $this->CI->zapi->send_command( $item_info->address, 'increase' );
+	function increase(){
+		return $this->CI->zapi->send_command( $this->item_info->address, 'increase' );
 	}
 
-	function decrease( $item_info = array() ){
-		return $this->CI->zapi->send_command( $item_info->address, 'decrease' );
+	function decrease(){
+		return $this->CI->zapi->send_command( $this->item_info->address, 'decrease' );
 	}
 
-	function update( $item_info = array() ){
-		return $this->CI->zapi->send_command( $item_info->address, 'update' );
+	function update(){
+		return $this->CI->zapi->send_command( $this->item_info->address, 'update' );
 	}
 
-	function exact( $item_info = array() ){
+	function exact(){
 
-		$status = $this->CI->zapi->send_command( $item_info->address, 'exact', array( 'level' => $level ) );
+		$status = $this->CI->zapi->send_command( $this->item_info->address, 'exact', array( 'level' => $level ) );
 
 		if( $status ){
-			$this->CI->zitem->set_value( $item_info->id, $level );
+			$this->CI->zitem->set_value( $this->item_info->id, $level );
 		}
 
 		return $status;

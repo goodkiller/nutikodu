@@ -8,12 +8,12 @@ class AccuWeather extends VirtualDevice
 		parent::__construct();
 	}
 
-	function get_item_title( $item_info = array() ){
+	function get_item_title(){
 		
-		return $item_info->title;
+		return $this->item_info->title;
 	}
 
-	function get_item_body( $item_info = array() ){
+	function get_item_body(){
 
 		$info = $this->get_weather_info();
 

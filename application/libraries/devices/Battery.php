@@ -6,23 +6,23 @@ class Battery extends VirtualDevice
 		parent::__construct();
 	}
 
-	function get_item_title( $item_info = array() ){
+	function get_item_title(){
 		
-		return $item_info->title;
+		return $this->item_info->title;
 	}
 
-	function get_item_body( $item_info = array() ){
+	function get_item_body(){
 
-		if( $item_info->last_value <= 5 ){
+		if( $this->item_info->last_value <= 5 ){
 			$battery_level = 0;
 		}
-		else if( $item_info->last_value <= 25 ){
+		else if( $this->item_info->last_value <= 25 ){
 			$battery_level = 1;
 		}
-		else if( $item_info->last_value <= 45 ){
+		else if( $this->item_info->last_value <= 45 ){
 			$battery_level = 2;
 		}
-		else if( $item_info->last_value <= 75 ){
+		else if( $this->item_info->last_value <= 75 ){
 			$battery_level = 3;
 		}
 		else{
@@ -31,6 +31,6 @@ class Battery extends VirtualDevice
 
 		$classes = array( __CLASS__, 'fa', 'fa-battery-' . $battery_level );
 
-		return '<i class="' . implode( ' ', $classes ) . '" aria-hidden="true"></i><br />' . $item_info->last_value . '%';
+		return '<i class="' . implode( ' ', $classes ) . '" aria-hidden="true"></i><br />' . $this->item_info->last_value . '%';
 	}
 }

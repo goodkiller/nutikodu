@@ -3,69 +3,87 @@
 class VirtualDevice
 {
 	var $CI;
+	protected $item_info = array();
 	
 	function __construct(){
 		$this->CI =& get_instance();
 	}
 
-	function get_item_title( $item_info = array() ){
+	function get_item_title(){
 		return '???';
 	}
 
-	function get_item_body( $item_info = array() ){
+	function get_item_body(){
 		return '<i class="fa fa-question" aria-hidden="true"></i>';
 	}
 
-	function get_item_options( $item_info = array() ){
+	function get_item_options(){
 		return array();
 	}
 
-	function get_item_toggle_content( $item_info = array() )
+	function get_item_toggle_content()
 	{
 		
 	}
 
-	function get_item_settings_content( $item_info = array() )
+	function get_item_settings_content()
 	{
 		
 	}
 
-	function on( $item_info = array() ){
+	function on(){
 		return FALSE;
 	}
 
-	function off( $item_info = array() ){
+	function off(){
 		return FALSE;
 	}
 
-	function min( $item_info = array() ){
+	function min(){
 		return FALSE;
 	}
 
-	function max( $item_info = array() ){
+	function max(){
 		return FALSE;
 	}
 
-	function increase( $item_info = array() ){
+	function increase(){
 		return FALSE;
 	}
 
-	function decrease( $item_info = array() ){
+	function decrease(){
 		return FALSE;
 	}
 
-	function update( $item_info = array() ){
+	function update(){
 		return FALSE;
 	}
 
-	function exact( $item_info = array() ){
+	function exact(){
 		return FALSE;
 	}
 
 
+	/**
+	 * Set intem info
+	 * @method  set_item_info
+	 * @author  Marko Praakli
+	 * @date    2017-01-04
+	 */
+	protected function set_item_info( $item_info = array() )
+	{
+		$this->item_info = $item_info;
 
+		return $this;
+	}
 
-	function call( $item_id = 0, $func = '', $params = array() )
+	/**
+	 * Call a device library method
+	 * @method  call
+	 * @author  Marko Praakli
+	 * @date    2017-01-04
+	 */
+	function call( $item_id = 0, $call = '', $params = array() )
 	{
 		// Get item info
 		$item_info = $this->CI->zitem->get( $item_id );
@@ -73,7 +91,10 @@ class VirtualDevice
 		if( !empty($item_info) )
 		{
 			// Load library
-			$this->CI->load->library( 'devices/' . $item_info->classname, $item_info->classname );
+			$this->CI->load->library( 'devices/' . $item_info->classname );
+
+			$class = strtolower($item_info->classname);
+			$class = $this->CI->$class;
 
 			$user_func_params = array( $item_info );
 			$user_func_params = array_merge( $user_func_params, $params );
@@ -82,13 +103,12 @@ class VirtualDevice
 			if(class_exists($item_info->classname))
 			{
 				// Check if method exists
-				if(method_exists($item_info->classname, $func))
+				if(method_exists($class, $call))
 				{
-					return call_user_func_array( array(new $item_info->classname, $func), $user_func_params );
+					return $class->set_item_info( $item_info )->$call();
 				}
 			}
 		}
-
 
 		return FALSE;
 	}

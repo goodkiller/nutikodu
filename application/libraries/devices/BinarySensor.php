@@ -6,17 +6,17 @@ class BinarySensor extends VirtualDevice
 		parent::__construct();
 	}
 
-	function get_item_title( $item_info = array() ){
+	function get_item_title(){
 		
-		return $item_info->title;
+		return $this->item_info->title;
 	}
 
-	function get_item_body( $item_info = array() ){
+	function get_item_body(){
 
 		$classes = array( 'fa' );
 
 		// Off
-		if( $item_info->last_value == 0 )
+		if( $this->item_info->last_value == 0 )
 		{
 			$classes[] = 'fa-bell-slash-o';
 		}

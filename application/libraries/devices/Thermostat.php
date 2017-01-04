@@ -6,14 +6,14 @@ class Thermostat extends VirtualDevice
 		parent::__construct();
 	}
 
-	function get_item_title( $item_info = array() ){
+	function get_item_title(){
 		
-		return $item_info->title;
+		return $this->item_info->title;
 	}
 
-	function get_item_body( $item_info = array() ){
+	function get_item_body(){
 
-		return $item_info->last_value . '&deg;';
+		return $this->item_info->last_value . '&deg;';
 	}
 
 	/**
@@ -22,12 +22,12 @@ class Thermostat extends VirtualDevice
 	 * @author  Marko Praakli
 	 * @date    2017-01-03
 	 */
-	function exact( $item_info = array() ){
+	function exact(){
 
-		$status = $this->CI->zapi->send_command( $item_info->address, 'exact', array( 'level' => $level ) );
+		$status = $this->CI->zapi->send_command( $this->item_info->address, 'exact', array( 'level' => $level ) );
 
 		if( $status ){
-			$this->CI->zitem->set_value( $item_info->id, $level );
+			$this->CI->zitem->set_value( $this->item_info->id, $level );
 		}
 
 		return $status;

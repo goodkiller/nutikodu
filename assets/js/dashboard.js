@@ -103,14 +103,17 @@ var Dashboard = {
 				.appendTo( $item_container );
 		}
 
-		// Click
-		if( item_info.options.event !== undefined && item_info.options.event == 'click' ){
-			$item_container.bind( 'click', this.__on_single_click );
-		}
+		if( item_info.event_type !== null )
+		{
+			// Click
+			if( item_info.event_type == 'click' ){
+				$item_container.bind( 'click', this.__on_single_click );
+			}
 
-		// Toggle
-		if( item_info.options.event !== undefined && item_info.options.event == 'toggle' ){
-			$item_container.bind( 'click', this.__on_toggle );
+			// Toggle
+			if( item_info.event_type == 'toggle' ){
+				$item_container.bind( 'click', this.__on_toggle );
+			}
 		}
 
 		// Calculate sizes
@@ -136,12 +139,16 @@ var Dashboard = {
 
 		var classes = [];
 
-		if( item_info.size != undefined ){
+		if( item_info.size != null ){
 			classes.push( 'size-' + item_info.size );
 		}
 
-		if( item_info.classname != undefined && item_info.classname !== null ){
+		if( item_info.classname != null && item_info.classname !== null ){
 			classes.push( item_info.classname );
+		}
+
+		if( item_info.event_type !== null ){
+			classes.push( 'clickable' );
 		}
 
 		return classes.join( ' ' );

@@ -11,7 +11,7 @@ class Zdashboard extends CI_Model
 	{
 		$items_list = array();
 
-		$this->db->select('di.item_id, di.bg_color');
+		$this->db->select('di.item_id, di.bg_color, di.event_type');
 		$this->db->select("di.width || 'x' || di.height AS size", FALSE);
 		$this->db->select('i.classname');
 		$this->db->from('dashboard_items di');
