@@ -17,9 +17,12 @@ class Zapi extends CI_Model
 	 */
 	function get_devices()
 	{
+		$this->load->library( 'curl' );
+
 		$devices_list = array();
 
-		$zdevices = $this->_curl_get( 'devices' );
+		$zdevices = $this->curl->simple_get( $this->get_url( 'devices' ) );
+		$zdevices = json_decode( $zdevices, TRUE );
 
 		if( !empty($zdevices[ 'data' ][ 'devices' ]) ){
 			foreach( $zdevices[ 'data' ][ 'devices' ] as $i => $zdev )
@@ -84,14 +87,15 @@ class Zapi extends CI_Model
 		{
 			foreach( $zdevices as $zdev )
 			{
-				$this->db->query( 'INSERT INTO items (title, address, type, icon, create_date, update_date, last_value) 
-					VALUES( ?, ?, ?, ?, TO_TIMESTAMP(?), TO_TIMESTAMP(?), ? ) 
+				$this->db->query( 'INSERT INTO items (title, address, type, icon, unit, create_date, update_date, last_value) 
+					VALUES( ?, ?, ?, ?, ?, TO_TIMESTAMP(?), TO_TIMESTAMP(?), ? ) 
 					ON CONFLICT ON CONSTRAINT "UNIQ_ITM_ADDR" 
 					DO UPDATE SET 
 						title = ?, 
 						address = ?, 
 						type = ?, 
 						icon = ?, 
+						unit = ?, 
 						create_date = TO_TIMESTAMP(?), 
 						update_date = TO_TIMESTAMP(?), 
 						last_value = ?', array(
@@ -101,6 +105,7 @@ class Zapi extends CI_Model
 					$zdev[ 'id' ], 
 					$zdev[ 'deviceType' ], 
 					$zdev[ 'metrics' ][ 'icon' ] ?? NULL,
+					$zdev[ 'metrics' ][ 'scaleTitle' ] ?? NULL,
 					$zdev[ 'creationTime' ],
 					$zdev[ 'updateTime' ],
 					$zdev[ 'metrics' ][ 'level' ] ?? NULL,
@@ -110,6 +115,7 @@ class Zapi extends CI_Model
 					$zdev[ 'id' ], 
 					$zdev[ 'deviceType' ], 
 					$zdev[ 'metrics' ][ 'icon' ] ?? NULL,
+					$zdev[ 'metrics' ][ 'scaleTitle' ] ?? NULL,
 					$zdev[ 'creationTime' ], 
 					$zdev[ 'updateTime' ], 
 					$zdev[ 'metrics' ][ 'level' ] ?? NULL

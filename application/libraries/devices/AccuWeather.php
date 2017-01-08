@@ -36,7 +36,7 @@ class AccuWeather extends VirtualDevice
 			return array(
 				'timestamp' => strtotime( $response->LocalObservationDateTime ),
 				'value' => $response->Temperature->Metric->Value,
-				'icon' => $this->api_url . '/developers/Media/Default/WeatherIcons/' . $response->WeatherIcon . '-s.png',
+				'icon' => $this->api_url . '/developers/Media/Default/WeatherIcons/' . str_pad($response->WeatherIcon, 2, 0, STR_PAD_LEFT) . '-s.png',
 				'unit' => $response->Temperature->Metric->Unit,
 				'symbol' => '&deg;'
 			);
@@ -49,5 +49,15 @@ class AccuWeather extends VirtualDevice
 			'unit' => 'C',
 			'symbol' => '&deg;'
 		);
+	}
+
+	/**
+	 * Crontab
+	 * @method  crontab
+	 * @author  Marko Praakli
+	 * @date    2017-01-08
+	 */
+	function crontab(){
+
 	}
 }

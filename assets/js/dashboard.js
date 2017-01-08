@@ -24,6 +24,16 @@ var Dashboard = {
 		$(window).bind('debouncedresize', function(){
 			parent.resizeItems();
 		});
+
+		// Clickable events
+		$( document.body ).on('click', '[data-command]', function(){
+
+			var $btn = $( this ),
+				$btn_data = $btn.data();
+
+			// Send command
+			Command.send( $btn_data.id, $btn_data.command, $btn );
+		});
 	},
 
 	loadItems: function(){
@@ -148,7 +158,7 @@ var Dashboard = {
 		}
 
 		if( item_info.event_type !== null ){
-			classes.push( 'clickable' );
+			classes.push( 'ripple_fx' );
 		}
 
 		return classes.join( ' ' );

@@ -13,7 +13,7 @@ class Thermostat extends VirtualDevice
 
 	function get_item_body(){
 
-		return $this->item_info->last_value . '&deg;';
+		return $this->item_info->last_value . $this->item_info->unit;
 	}
 
 	/**
@@ -31,5 +31,15 @@ class Thermostat extends VirtualDevice
 		}
 
 		return $status;
+	}
+
+	/**
+	 * Crontab
+	 * @method  crontab
+	 * @author  Marko Praakli
+	 * @date    2017-01-08
+	 */
+	function crontab(){
+
 	}
 }

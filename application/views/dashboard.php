@@ -23,6 +23,7 @@
 	<script src="assets/js/lib/jquery.debouncedresize.js"></script>
 	<script src="assets/js/dashboard.js"></script>
 	<script src="assets/js/dialog.js"></script>
+	<script src="assets/js/command.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -42,7 +43,7 @@
 				<h4 class="modal-title">Modal title</h4>
 			</div>
 			<div class="modal-body">
-				<p>One fine body&hellip;</p>
+				<img src="assets/img/hourglass.gif" class="img-fluid mx-auto d-block" alt="Laadin ...">
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Tühista</button>
@@ -63,7 +64,7 @@
 				<h4 class="modal-title">Modal title</h4>
 			</div>
 			<div class="modal-body">
-				<p>One fine body&hellip;</p>
+				<img src="assets/img/hourglass.gif" class="img-fluid mx-auto d-block" alt="Laadin ...">
 			</div>
 		</div>
 	</div>

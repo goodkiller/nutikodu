@@ -31,6 +31,16 @@ class Battery extends VirtualDevice
 
 		$classes = array( __CLASS__, 'fa', 'fa-battery-' . $battery_level );
 
-		return '<i class="' . implode( ' ', $classes ) . '" aria-hidden="true"></i><br />' . $this->item_info->last_value . '%';
+		return '<i class="' . implode( ' ', $classes ) . '" aria-hidden="true"></i><br />' . $this->item_info->last_value . $this->item_info->unit;
+	}
+
+	/**
+	 * Crontab
+	 * @method  crontab
+	 * @author  Marko Praakli
+	 * @date    2017-01-08
+	 */
+	function crontab(){
+
 	}
 }

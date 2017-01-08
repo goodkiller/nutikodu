@@ -19,7 +19,7 @@ class MiApi extends CI_Model
 	 */
 	function master_on(){
 
-		$this->send_command( 0x01 );
+		return $this->send_command( 0x01 );
 	}
 
 	/**
@@ -30,7 +30,7 @@ class MiApi extends CI_Model
 	 */
 	function master_off(){
 
-		$this->send_command( 0x02 );
+		return $this->send_command( 0x02 );
 	}
 
 	/**
@@ -54,7 +54,7 @@ class MiApi extends CI_Model
 			$byte = 0x09;
 		}
 
-		$this->send_command( $byte );
+		return $this->send_command( $byte );
 	}
 
 	/**
@@ -78,7 +78,7 @@ class MiApi extends CI_Model
 			$byte = 0x0A;
 		}
 
-		$this->send_command( $byte );
+		return $this->send_command( $byte );
 	}
 
 	/**

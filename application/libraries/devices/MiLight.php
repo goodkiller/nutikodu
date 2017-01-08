@@ -36,6 +36,8 @@ class MiLight extends VirtualDevice
 		if( $status ){
 			$this->CI->zitem->set_value( $this->item_info->id, 1 );
 		}
+
+		return $status;
 	}
 
 	public function off(){
@@ -47,6 +49,8 @@ class MiLight extends VirtualDevice
 		if( $status ){
 			$this->CI->zitem->set_value( $this->item_info->id, 0 );
 		}
+
+		return $status;
 	}
 
 	function increase( $channel = NULL ){
@@ -57,6 +61,16 @@ class MiLight extends VirtualDevice
 	function decrease( $channel = NULL ){
 
 		$this->CI->load->model( 'miapi' );
+
+	}
+
+	/**
+	 * Crontab
+	 * @method  crontab
+	 * @author  Marko Praakli
+	 * @date    2017-01-08
+	 */
+	function crontab(){
 
 	}
 }

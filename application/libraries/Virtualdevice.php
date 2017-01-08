@@ -113,4 +113,13 @@ class VirtualDevice
 		return FALSE;
 	}
 
+	/**
+	 * Crontab
+	 * @method  crontab
+	 * @author  Marko Praakli
+	 * @date    2017-01-08
+	 */
+	function crontab(){
+
+	}
 }
