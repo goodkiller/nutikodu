@@ -13,11 +13,17 @@ class AccuWeather extends VirtualDevice
 		return $this->item_info->title;
 	}
 
-	function get_item_body(){
-
-		$info = $this->get_weather_info();
-
-		return '<img src="' . $info[ 'icon' ] . '">' . $info[ 'value' ] . $info[ 'symbol' ];
+	function get_item_body()
+	{
+		// Get item last value
+		if( $last_value_info = $this->CI->zitem->get_last_value( $this->item_info->id ) )
+		{
+			return '<img src="' . $last_value_info->params->icon . '">' . $last_value_info->value . $last_value_info->params->symbol;
+		}
+		else
+		{
+			return 'N/A';
+		}
 	}
 
 	private function get_weather_info()
@@ -52,12 +58,20 @@ class AccuWeather extends VirtualDevice
 	}
 
 	/**
-	 * Crontab
-	 * @method  crontab
+	 * Force check
+	 * @method  force_check
 	 * @author  Marko Praakli
-	 * @date    2017-01-08
+	 * @date    2017-02-25
 	 */
-	function crontab(){
+	function force_check()
+	{
+		$weather_info = $this->get_weather_info();
 
+		// Add history
+		if( $this->CI->zitem->add_history( $this->item_info->id, $weather_info[ 'value' ],  $weather_info[ 'timestamp' ], $weather_info ) ){
+			return TRUE;
+		}
+
+		return FALSE;
 	}
 }

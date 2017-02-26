@@ -32,12 +32,13 @@ class BinarySensor extends VirtualDevice
 	}
 
 	/**
-	 * Crontab
-	 * @method  crontab
+	 * Force check
+	 * @method  force_check
 	 * @author  Marko Praakli
-	 * @date    2017-01-08
+	 * @date    2017-02-25
 	 */
-	function crontab(){
+	function force_check()
+	{
 
 	}
 }

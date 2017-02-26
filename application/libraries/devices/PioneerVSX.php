@@ -2,6 +2,9 @@
 
 class PioneerVSX extends VirtualDevice
 {
+	protected $timeout = 3;
+	protected $port = 23;
+
 	function __construct(){
 		parent::__construct();
 	}
@@ -79,19 +82,24 @@ class PioneerVSX extends VirtualDevice
 	private function send_command( $command = '' )
 	{
 		$response = NULL;
-
-		$fp = @fsockopen( $this->CI->settings->get( 'pioneer_vsx_hostname' ), 23 );
-	
-		if( $fp )
-		{
-			fputs($fp, $command . "\r\n");
-
-			$response = fgets($fp);
-
-			fclose($fp);
-		}
 		
-		return $this->parse_response( $response );
+		if ( !$fp = @fsockopen( $this->CI->settings->get( 'pioneer_vsx_hostname' ), $this->port, $errno, $errstr, $this->timeout) ) 
+        {
+            return $this->parse_response( $response );
+        }
+        else
+        {
+            if( $fp )
+			{
+				fputs($fp, $command . "\r\n");
+
+				$response = fgets($fp);
+
+				fclose($fp);
+			}
+
+			return $this->parse_response( $response );
+        }
 	}
 
 	private function parse_response( $response = NULL ){
@@ -113,12 +121,13 @@ class PioneerVSX extends VirtualDevice
 	}
 
 	/**
-	 * Crontab
-	 * @method  crontab
+	 * Force check
+	 * @method  force_check
 	 * @author  Marko Praakli
-	 * @date    2017-01-08
+	 * @date    2017-02-25
 	 */
-	function crontab(){
+	function force_check()
+	{
 
 	}
 }

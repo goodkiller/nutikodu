@@ -44,6 +44,8 @@ var Command = {
 		console.log( "success" );
 		console.log( response );
 
+		this.waiting = false;
+
 		$btn.addClass( 'fshake_fx' );
 
 		setTimeout(function(){
@@ -58,6 +60,8 @@ var Command = {
 	 * @date    2017-01-06
 	 */
 	_on_fail: function( e, $btn ){
+
+		this.waiting = false;
 
 		// Shake it
 		$btn.addClass( 'fshake_fx' );

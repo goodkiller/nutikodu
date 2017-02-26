@@ -46,6 +46,38 @@ class Zapi extends CI_Model
 	}
 
 	/**
+	 * Get device info
+	 * @method  get_device
+	 * @author  Marko Praakli
+	 * @date    2017-02-25
+	 */
+	function get_device( $address = '' )
+	{
+		$this->load->library( 'curl' );
+
+		$devices_list = array();
+
+		$zdevice_info = $this->curl->simple_get( $this->get_url( 'devices/' . $address ) );
+		$zdevice_info = json_decode( $zdevice_info, TRUE );
+
+		if( !empty($zdevice_info[ 'data' ]) )
+		{
+			// Not numeric value
+			if( !is_numeric($zdevice_info[ 'data' ][ 'metrics' ][ 'level' ]) )
+			{
+				if( $zdevice_info[ 'data' ][ 'metrics' ][ 'level' ] == 'on' ){
+					$zdevice_info[ 'data' ][ 'metrics' ][ 'level' ] = 1;
+				}
+				else if( $zdevice_info[ 'data' ][ 'metrics' ][ 'level' ] == 'off' ){
+					$zdevice_info[ 'data' ][ 'metrics' ][ 'level' ] = 0;
+				}
+			}
+		}
+
+		return $zdevice_info[ 'data' ];
+	}
+
+	/**
 	 * Send command to ZEay API
 	 * @method  send_command
 	 * @author  Marko Praakli

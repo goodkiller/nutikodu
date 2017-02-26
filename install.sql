@@ -31,6 +31,19 @@ ALTER TABLE public.dashboard_items OWNER TO nutikodu;
 CREATE INDEX "IDX_DSH_ITM_DSH_ID" ON public.dashboard_items USING btree (dashboard_id);
 CREATE INDEX "IDX_DSH_ITM_ITM_ID" ON public.dashboard_items USING btrees (item_id);
 
+-- public.history
+CREATE TABLE public.history
+(
+	id integer NOT NULL DEFAULT nextval('history_id_seq'::regclass),
+	item_id integer NOT NULL,
+	value numeric,
+	create_date timestamp with time zone NOT NULL DEFAULT now(),
+	params json,
+	CONSTRAINT "FK_HIST_ITEMID" FOREIGN KEY (item_id) REFERENCES public.items (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+);
+ALTER TABLE public.history OWNER TO nutikodu;
+CREATE INDEX "IDX_HIST_ITEMID" ON public.history USING btree (item_id);
+CREATE INDEX "IDX_HIST_CDATE" ON public.history USING btree (create_date);
 
 
 -- Zway settings

@@ -63,14 +63,4 @@ class MiLight extends VirtualDevice
 		$this->CI->load->model( 'miapi' );
 
 	}
-
-	/**
-	 * Crontab
-	 * @method  crontab
-	 * @author  Marko Praakli
-	 * @date    2017-01-08
-	 */
-	function crontab(){
-
-	}
 }
