@@ -96,16 +96,13 @@ class VirtualDevice
 			$class = strtolower($item_info->classname);
 			$class = $this->CI->$class;
 
-			$user_func_params = array( $item_info );
-			$user_func_params = array_merge( $user_func_params, $params );
-
 			// Check if sensor library is loaded
 			if(class_exists($item_info->classname))
 			{
 				// Check if method exists
 				if(method_exists($class, $call))
 				{
-					return $class->set_item_info( $item_info )->$call();
+					return $class->set_item_info( $item_info )->$call( $params );
 				}
 			}
 		}
@@ -113,13 +110,7 @@ class VirtualDevice
 		return FALSE;
 	}
 
-	/**
-	 * Crontab
-	 * @method  crontab
-	 * @author  Marko Praakli
-	 * @date    2017-01-08
-	 */
-	function crontab(){
-
+	function force_check(){
+		return FALSE;
 	}
 }

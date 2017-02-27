@@ -11,23 +11,14 @@ class MultilevelSwitch extends VirtualDevice
 		return $this->item_info->title;
 	}
 
-	function get_item_body(){
+	function get_item_body( $dashboard_item_info = array() ){
 
-		$classes = array( 'fa' );
+		$vars = array(
+			'item_info' => $this->item_info,
+			'last_value_info' => $this->CI->zitem->get_last_value( $this->item_info->id )
+		);
 
-		// Off
-		if( $this->item_info->last_value == 0 )
-		{
-			$classes[] = 'fa-toggle-off text-muted';
-		}
-
-		// On
-		else
-		{
-			$classes[] = 'fa-toggle-on';
-		}
-
-		return '<i class="' . implode( ' ', $classes ) . '" aria-hidden="true"></i>';
+		return $this->CI->load->view( 'devices/' . __CLASS__ . '/item_body/' . $dashboard_item_info->size, $vars, TRUE );
 	}
 
 	function get_body( $event_type = 'click' ){
@@ -44,7 +35,7 @@ class MultilevelSwitch extends VirtualDevice
 		$status = $this->CI->zapi->send_command( $this->item_info->address, 'on' );
 
 		if( $status ){
-			$this->CI->zitem->set_value( $this->item_info->id, 99 );
+			$this->CI->zitem->add_history( $this->item_info->id, 99 );
 		}
 
 		return $status;
@@ -55,7 +46,7 @@ class MultilevelSwitch extends VirtualDevice
 		$status = $this->CI->zapi->send_command( $this->item_info->address, 'off' );
 
 		if( $status ){
-			$this->CI->zitem->set_value( $this->item_info->id, 0 );
+			$this->CI->zitem->add_history( $this->item_info->id, 0 );
 		}
 
 		return $status;
@@ -86,7 +77,7 @@ class MultilevelSwitch extends VirtualDevice
 		$status = $this->CI->zapi->send_command( $this->item_info->address, 'exact', array( 'level' => $level ) );
 
 		if( $status ){
-			$this->CI->zitem->set_value( $this->item_info->id, $level );
+			$this->CI->zitem->add_history( $this->item_info->id, $level );
 		}
 
 		return $status;

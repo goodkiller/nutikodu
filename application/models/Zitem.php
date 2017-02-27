@@ -61,23 +61,6 @@ class Zitem extends CI_Model
 		return FALSE;
 	}
 
-	function set_value( $item_id = 0, $value = 0 )
-	{
-		$this->db->set( 'last_value', $value );
-		$this->db->where( 'id', $item_id );
-		$this->db->update( 'items' );
-	
-		if( $this->db->affected_rows() == 1 )
-		{
-			// Add history
-			$this->add_history( $item_id, $value );
-
-			return TRUE;
-		}
-
-		return FALSE;
-	}
-
 	function get_cron_items()
 	{
 		$this->db->from( 'items' );

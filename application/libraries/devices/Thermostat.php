@@ -35,7 +35,7 @@ class Thermostat extends VirtualDevice
 		$status = $this->CI->zapi->send_command( $this->item_info->address, 'exact', array( 'level' => $level ) );
 
 		if( $status ){
-			$this->CI->zitem->set_value( $this->item_info->id, $level );
+			$this->CI->zitem->add_history( $this->item_info->id, $level );
 		}
 
 		return $status;

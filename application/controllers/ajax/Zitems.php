@@ -67,23 +67,22 @@ class Zitems extends CI_Controller {
 	function toggle( $item_id = 0 )
 	{
 		$status = NULL;
-		$item_info = $this->zitem->get( $item_id );
 
-		if( !empty($item_info) )
+		// Get item last value
+		$last_value_info = $this->zitem->get_last_value( $item_id );
+	
+		// Last value was off
+		if( empty($last_value_info) || $last_value_info->value == 0 )
 		{
-			// Last value was off
-			if( $item_info->last_value == 0 )
-			{
-				// Set on
-				$status = $this->virtualdevice->call( $item_id, 'on' );
-			}
+			// Set on
+			$status = $this->virtualdevice->call( $item_id, 'on' );
+		}
 
-			// Last value was on
-			else
-			{
-				// Set on
-				$status = $this->virtualdevice->call( $item_id, 'off' );
-			}
+		// Last value was on
+		else
+		{
+			// Set on
+			$status = $this->virtualdevice->call( $item_id, 'off' );
 		}
 
 		return $status;

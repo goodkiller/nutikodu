@@ -27,17 +27,16 @@ class Dashboards extends CI_Controller {
 		{
 			$items_list[ $i ] = $item;
 
-			if( !empty($item->classname) )
-			{
+			if( !empty($item->classname) ){
 				foreach( $dynamic_methods as $key => $method ){
-					$items_list[ $i ]->$key = $this->virtualdevice->call( $item->item_id, $method );
+					$items_list[ $i ]->$key = $this->virtualdevice->call( $item->item_id, $method, $item );
 				}
 			}
 
-			// Recheck methods
+			// Recheck methods (dummy values)
 			foreach( $dynamic_methods as $key => $method ){
 				if( !isset($items_list[ $i ]->$key) ){
-					$items_list[ $i ]->$key = $this->virtualdevice->$method();
+					$items_list[ $i ]->$key = $this->virtualdevice->$method( $item );
 				}
 			}
 		}

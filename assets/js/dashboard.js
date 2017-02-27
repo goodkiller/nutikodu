@@ -57,6 +57,13 @@ var Dashboard = {
 					parent.addItem( data.items[ i ] );
 				}
 			}
+
+			// Slider
+			$( 'input[data-provide="slider"]' ).bootstrapSlider({
+				formatter: function(value) {
+					return 'Current value: ' + value;
+				}
+			});
 		});
 	},
 
@@ -102,6 +109,8 @@ var Dashboard = {
 				.addClass( 'title' )
 				.text( item_info.title )
 				.appendTo( $item_container );
+
+			$item_container.attr( 'title', item_info.title );
 		}
 
 		// Icon

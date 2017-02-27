@@ -24,6 +24,10 @@ class MultilevelSensor extends VirtualDevice
 		}
 	}
 
+	function update(){
+		return $this->CI->zapi->send_command( $this->item_info->address, 'update' );
+	}
+
 	/**
 	 * Force check
 	 * @method  force_check
@@ -32,6 +36,10 @@ class MultilevelSensor extends VirtualDevice
 	 */
 	function force_check()
 	{
+		// Update device
+		$this->update();
+
+		// Get device info
 		$zinfo = $this->CI->zapi->get_device( $this->item_info->address );
 
 		// Add history

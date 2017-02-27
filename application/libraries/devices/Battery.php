@@ -13,25 +13,33 @@ class Battery extends VirtualDevice
 
 	function get_item_body(){
 
-		if( $this->item_info->last_value <= 5 ){
-			$battery_level = 0;
-		}
-		else if( $this->item_info->last_value <= 25 ){
-			$battery_level = 1;
-		}
-		else if( $this->item_info->last_value <= 45 ){
-			$battery_level = 2;
-		}
-		else if( $this->item_info->last_value <= 75 ){
-			$battery_level = 3;
-		}
-		else{
-			$battery_level = 4;
-		}
+		// Get item last value
+		if( $last_value_info = $this->CI->zitem->get_last_value( $this->item_info->id ) )
+		{
+			if( $last_value_info->value <= 5 ){
+				$battery_level = 0;
+			}
+			else if( $last_value_info->value <= 25 ){
+				$battery_level = 1;
+			}
+			else if( $last_value_info->value <= 45 ){
+				$battery_level = 2;
+			}
+			else if( $last_value_info->value <= 75 ){
+				$battery_level = 3;
+			}
+			else{
+				$battery_level = 4;
+			}
 
-		$classes = array( __CLASS__, 'fa', 'fa-battery-' . $battery_level );
+			$classes = array( __CLASS__, 'fa', 'fa-battery-' . $battery_level );
 
-		return '<i class="' . implode( ' ', $classes ) . '" aria-hidden="true"></i><br />' . $this->item_info->last_value . $this->item_info->unit;
+			return '<i class="' . implode( ' ', $classes ) . '" aria-hidden="true"></i><br />' . $last_value_info->value . $this->item_info->unit;
+		}
+		else
+		{
+			return 'N/A';
+		}
 	}
 
 	/**
@@ -42,6 +50,13 @@ class Battery extends VirtualDevice
 	 */
 	function force_check()
 	{
+		$zinfo = $this->CI->zapi->get_device( $this->item_info->address );
 
+		// Add history
+		if( $this->CI->zitem->add_history( $this->item_info->id, $zinfo[ 'metrics' ][ 'level' ],  $zinfo[ 'metrics' ][ 'modificationTime' ] ) ){
+			return TRUE;
+		}
+
+		return FALSE;
 	}
 }

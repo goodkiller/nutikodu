@@ -34,7 +34,7 @@ class MiLight extends VirtualDevice
 		$status = $this->CI->miapi->channel_on( 1 );
 
 		if( $status ){
-			$this->CI->zitem->set_value( $this->item_info->id, 1 );
+			$this->CI->zitem->add_history( $this->item_info->id, 1 );
 		}
 
 		return $status;
@@ -47,7 +47,7 @@ class MiLight extends VirtualDevice
 		$status = $this->CI->miapi->channel_off( 1 );
 
 		if( $status ){
-			$this->CI->zitem->set_value( $this->item_info->id, 0 );
+			$this->CI->zitem->add_history( $this->item_info->id, 0 );
 		}
 
 		return $status;

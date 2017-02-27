@@ -31,6 +31,10 @@ class BinarySensor extends VirtualDevice
 		return '<i class="' . implode( ' ', $classes ) . '" aria-hidden="true"></i>';
 	}
 
+	function update(){
+		return $this->CI->zapi->send_command( $this->item_info->address, 'update' );
+	}
+
 	/**
 	 * Force check
 	 * @method  force_check
@@ -39,6 +43,17 @@ class BinarySensor extends VirtualDevice
 	 */
 	function force_check()
 	{
+		// Update device
+		$this->update();
 
+		// Get device info
+		$zinfo = $this->CI->zapi->get_device( $this->item_info->address );
+
+		// Add history
+		if( $this->CI->zitem->add_history( $this->item_info->id, $zinfo[ 'metrics' ][ 'level' ],  $zinfo[ 'metrics' ][ 'modificationTime' ] ) ){
+			return TRUE;
+		}
+
+		return FALSE;
 	}
 }

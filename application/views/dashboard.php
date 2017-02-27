@@ -8,6 +8,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="assets/js/lib/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/js/lib/bootstrap-slider/css/bootstrap-slider.min.css">
 	<link rel="stylesheet" href="assets/css/style.css" />
 	<link rel="stylesheet" href="assets/css/devices/MultilevelSwitch.css" />
 	<link rel="stylesheet" href="assets/css/devices/MiLight.css" />
@@ -21,6 +22,7 @@
 	<script src="assets/js/lib/bootstrap/js/bootstrap.min.js"></script>
 	<script src="assets/js/lib/isotope.pkgd.min.js"></script>
 	<script src="assets/js/lib/jquery.debouncedresize.js"></script>
+	<script src="assets/js/lib/bootstrap-slider/bootstrap-slider.min.js"></script>
 	<script src="assets/js/dashboard.js"></script>
 	<script src="assets/js/dialog.js"></script>
 	<script src="assets/js/command.js"></script>
