@@ -30,6 +30,16 @@ class Zitem extends CI_Model
 		return $query->row();
 	}
 
+	function get_by_address( $address = '' )
+	{
+		$this->db->from( 'items' );
+		$this->db->where( 'address', $address );
+	
+		$query = $this->db->get();
+
+		return $query->row();
+	}
+
 	function get_last_value( $item_id = 0 )
 	{
 		$query = $this->db->query( "
