@@ -87,4 +87,14 @@ class Zitems extends CI_Controller {
 
 		return $status;
 	}
+
+	function exact( $item_id = 0, $value = 0 )
+	{
+		$item_info = $this->zitem->get( $item_id );
+
+		if( !empty($item_info) )
+		{
+			echo $this->virtualdevice->call( $item_id, 'exact', $value );
+		}
+	}
 }

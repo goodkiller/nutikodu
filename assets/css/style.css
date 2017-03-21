@@ -49,6 +49,7 @@ body {
 	line-height: 25px;
 	font-size: 25px;
 	font-weight: 300;
+	overflow: hidden;
 }
 
 /* 2x2 */
@@ -103,6 +104,20 @@ body {
 	transform: translate3d(0, 0, 0);
 	backface-visibility: hidden;
 	perspective: 1000px;
+}
+
+/* Slider */
+.slider.slider-horizontal {
+	width: 170px;
+}
+
+.slider.slider-horizontal .slider-track {
+    height: 15px;
+}
+
+.slider-handle {
+    width: 25px;
+    height: 25px;
 }
 
 @keyframes shake {

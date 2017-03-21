@@ -72,7 +72,7 @@ class MultilevelSwitch extends VirtualDevice
 		return $this->CI->zapi->send_command( $this->item_info->address, 'update' );
 	}
 
-	function exact(){
+	function exact( $level = 0 ){
 
 		$status = $this->CI->zapi->send_command( $this->item_info->address, 'exact', array( 'level' => $level ) );
 

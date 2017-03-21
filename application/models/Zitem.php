@@ -98,7 +98,7 @@ class Zitem extends CI_Model
 		// Insert history
 		$this->db->query( 'INSERT INTO history (item_id, value, create_date, params) 
 			SELECT 
-				sl.item_id, sl.value, sl.create_date, sl.params 
+				sl.item_id, sl.value::NUMERIC, sl.create_date, sl.params 
 			FROM ( VALUES ( ?, ?, TO_TIMESTAMP( ? ), ?::JSON ) ) sl ( item_id, value, create_date, params )
 			LEFT JOIN (
 				SELECT 	
@@ -109,7 +109,7 @@ class Zitem extends CI_Model
 				) h2 ON h1.create_date = h2.max_create_date
 				WHERE h1.item_id = ? 
 			) lr ON TRUE
-			WHERE ( lr.value != sl.value OR lr.value IS NULL )
+			WHERE ( lr.value::NUMERIC != sl.value::NUMERIC OR lr.value IS NULL )
 		ON CONFLICT ON CONSTRAINT "UNIQ_HIST_ITMDATE" DO NOTHING', array(
 			$item_id, 
 			$value, 

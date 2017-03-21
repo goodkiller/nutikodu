@@ -30,7 +30,7 @@ class Thermostat extends VirtualDevice
 	 * @author  Marko Praakli
 	 * @date    2017-01-03
 	 */
-	function exact(){
+	function exact( $level = 0 ){
 
 		$status = $this->CI->zapi->send_command( $this->item_info->address, 'exact', array( 'level' => $level ) );
 

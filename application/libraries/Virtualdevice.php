@@ -59,7 +59,7 @@ class VirtualDevice
 		return FALSE;
 	}
 
-	function exact(){
+	function exact( $level = 0 ){
 		return FALSE;
 	}
 

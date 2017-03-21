@@ -59,10 +59,12 @@ var Dashboard = {
 			}
 
 			// Slider
-			$( 'input[data-provide="slider"]' ).bootstrapSlider({
-				formatter: function(value) {
-					return 'Current value: ' + value;
-				}
+			$( 'input[data-provide="slider"]' ).bootstrapSlider();
+			$( 'input[data-provide="slider"]' ).on("slideStop", function(slideEvt) {
+
+				var $item = $(this).closest('figure').data();
+
+				$.get( 'ajax/zitems/exact/' + $item.id + '/' + slideEvt.value );
 			});
 		});
 	},
