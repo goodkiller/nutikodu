@@ -3,8 +3,15 @@ var Dashboard = {
 	container: null,
 	isotope : null,
 
+	loading: true,
+
+	items: [],
+
 	options: {
-		gutter: 4
+		gutter: 4,
+		timers: {
+			events: 2000
+		}
 	},
 
 	init: function( container ){
@@ -34,6 +41,9 @@ var Dashboard = {
 			// Send command
 			Command.send( $btn_data.id, $btn_data.command, $btn );
 		});
+
+		// Load timers
+		this.loadTimers();
 	},
 
 	loadItems: function(){
@@ -66,7 +76,19 @@ var Dashboard = {
 
 				$.get( 'ajax/zitems/exact/' + $item.id + '/' + slideEvt.value );
 			});
+
+			// Stop loading
+			parent.setLoader( false );
 		});
+	},
+
+	loadTimers: function(){
+
+		var parent = this;
+
+		setInterval( function(){
+			parent.getItemEvents();
+		}, parent.options.timers.events );
 	},
 
 	resizeItems: function(){
@@ -94,7 +116,31 @@ var Dashboard = {
 			});
 	},
 
+	getItemEvents: function(){
+
+		var parent = this;
+
+		if( !parent.loading )
+		{
+			$.ajax({
+				type: 'POST',
+				url: 'ajax/events/items',
+				data: {
+					items: parent.items
+				},
+				success: function( response ){ 
+
+					console.log( response );
+				},
+				dataType: 'json'
+			});
+		}
+	},
+
 	addItem: function( item_info ){
+
+		// Add item
+		this.items.push( item_info.item_id );
 
 		$item_container = $( '<figure />' )
 			.addClass( this.__getItemClasses( item_info ) )
@@ -154,6 +200,11 @@ var Dashboard = {
 					columnWidth: this.__calc_col_width()
 				}
 			});
+	},
+
+	setLoader: function( status ){
+
+		this.loading = status;
 	},
 
 	__getItemClasses: function( item_info ){

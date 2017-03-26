@@ -24,7 +24,6 @@ class Zitems extends CI_Controller {
 		));
 	}
 
-
 	function test()
 	{
 

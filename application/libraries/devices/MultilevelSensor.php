@@ -16,7 +16,7 @@ class MultilevelSensor extends VirtualDevice
 		// Get item last value
 		if( $last_value_info = $this->CI->zitem->get_last_value( $this->item_info->id ) )
 		{
-			return $last_value_info->value . $this->item_info->unit;
+			return round( $last_value_info->value, 1 ) . $this->item_info->unit;
 		}
 		else
 		{
