@@ -15,13 +15,18 @@ class Zapi extends CI_Model
 	 * @author  Marko Praakli
 	 * @date    2017-01-03
 	 */
-	function get_devices()
+	function get_devices( $since = 0 )
 	{
 		$this->load->library( 'curl' );
 
 		$devices_list = array();
+		$url = $this->get_url( 'devices' );
 
-		$zdevices = $this->curl->simple_get( $this->get_url( 'devices' ) );
+		if( $since > 0 ){
+			$url .= '?since=' . $since;
+		}
+
+		$zdevices = $this->curl->simple_get( $url );
 		$zdevices = json_decode( $zdevices, TRUE );
 
 		if( !empty($zdevices[ 'data' ][ 'devices' ]) ){

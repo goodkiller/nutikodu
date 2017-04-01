@@ -119,7 +119,10 @@ class Zitem extends CI_Model
 			$item_id 
 		));
 
-		if( $this->db->affected_rows() == 1 ){
+		if( $this->db->affected_rows() == 1 )
+		{
+			log_message( 'debug', '[HISTORY] Item id: "' . $item_id . '", value: "' . $value . '"' );
+
 			return $this->db->insert_id();
 		}
 

@@ -27,26 +27,4 @@ class MultilevelSensor extends VirtualDevice
 	function update(){
 		return $this->CI->zapi->send_command( $this->item_info->address, 'update' );
 	}
-
-	/**
-	 * Force check
-	 * @method  force_check
-	 * @author  Marko Praakli
-	 * @date    2017-02-25
-	 */
-	function force_check()
-	{
-		// Update device
-		$this->update();
-
-		// Get device info
-		$zinfo = $this->CI->zapi->get_device( $this->item_info->address );
-
-		// Add history
-		if( $this->CI->zitem->add_history( $this->item_info->id, $zinfo[ 'metrics' ][ 'level' ],  $zinfo[ 'metrics' ][ 'modificationTime' ] ) ){
-			return TRUE;
-		}
-
-		return FALSE;
-	}
 }

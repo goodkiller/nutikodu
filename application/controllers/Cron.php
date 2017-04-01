@@ -5,6 +5,7 @@ class Cron extends CI_Controller {
 
 	public function jobs()
 	{
+		/*
 		$cron_items = $this->zitem->get_cron_items();
 		$updateable_items = array();
 
@@ -22,5 +23,10 @@ class Cron extends CI_Controller {
 			$this->db->where_in( 'id', $updateable_items );
 			$this->db->update( 'public.items' );
 		}
+		*/
+	
+		$this->load->library( 'Jobs' );
+
+		$this->jobs->check_all();
 	}
 }
