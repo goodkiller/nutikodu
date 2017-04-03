@@ -23,13 +23,13 @@ class Dashboards extends CI_Controller {
 			'body' => 'get_item_body'
 		);
 
-		foreach( $this->zdashboard->get_items( $dashboard_id ) as $i => $item )
+		foreach( $this->dashboard->get_items_by_dashboard( $dashboard_id ) as $i => $item )
 		{
 			$items_list[ $i ] = $item;
 
 			if( !empty($item->classname) ){
 				foreach( $dynamic_methods as $key => $method ){
-					$items_list[ $i ]->$key = $this->virtualdevice->call( $item->item_id, $method, $item );
+					$items_list[ $i ]->$key = $this->virtualdevice->call( $item->id, $method, $item );
 				}
 			}
 
@@ -42,7 +42,8 @@ class Dashboards extends CI_Controller {
 		}
 
 		$this->output(array(
-			'items' => $items_list
+			'items' => $items_list,
+			'status' => 'OK'
 		));
 	}
 }

@@ -16,8 +16,10 @@ class PioneerVSX extends VirtualDevice
 
 	function get_item_body(){
 
+		$last_value = $this->CI->zitem->get_last_value( $this->item_info->id );
+
 		$item_content = '<i class="fa fa-chevron-up" aria-hidden="true" data-id="' . $this->item_info->id . '" data-command="increase"></i>';
-		$item_content .= '<div class="dbvalue">-40dB</div>';
+		$item_content .= '<div class="dbvalue">' . $last_value . 'dB</div>';
 		$item_content .= '<i class="fa fa-chevron-down" aria-hidden="true" data-id="' . $this->item_info->id . '" data-command="decrease"></i>';
 
 		return $item_content;

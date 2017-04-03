@@ -23,7 +23,7 @@ class ZautomationJob extends Jobs
 				// Device info exists
 				if( !empty($item_info) )
 				{
-					log_message( 'debug', '[JOB] Zautomation: Address "' . $device[ 'id' ] . '", item id: "' . $item_info->id . '"' );
+					log_message( 'debug', '[JOB] zautomation: Address "' . $device[ 'id' ] . '", item id: "' . $item_info->id . '"' );
 
 					// Add history
 					$this->CI->zitem->add_history( $item_info->id, $device[ 'metrics' ][ 'level' ],  $device[ 'metrics' ][ 'modificationTime' ] );

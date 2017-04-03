@@ -5,12 +5,14 @@ var Dashboard = {
 
 	loading: true,
 
-	items: [],
+	items: {
+		dynamic: []
+	},
 
 	options: {
 		gutter: 4,
 		timers: {
-			events: 2000
+			events: 5000
 		}
 	},
 
@@ -68,15 +70,6 @@ var Dashboard = {
 				}
 			}
 
-			// Slider
-			$( 'input[data-provide="slider"]' ).bootstrapSlider();
-			$( 'input[data-provide="slider"]' ).on("slideStop", function(slideEvt) {
-
-				var $item = $(this).closest('figure').data();
-
-				$.get( 'ajax/zitems/exact/' + $item.id + '/' + slideEvt.value );
-			});
-
 			// Stop loading
 			parent.setLoader( false );
 		});
@@ -120,17 +113,24 @@ var Dashboard = {
 
 		var parent = this;
 
-		if( !parent.loading )
+		if( !parent.loading && parent.items.dynamic.length > 0 )
 		{
 			$.ajax({
 				type: 'POST',
 				url: 'ajax/events/items',
 				data: {
-					items: parent.items
+					items: parent.items.dynamic
 				},
 				success: function( response ){ 
 
-					console.log( response );
+					if( response.status == 'OK' )
+					{
+						for( var i in response.items )
+						{
+							// Update item
+							parent.updateItem( response.items[ i ] );
+						}
+					}
 				},
 				dataType: 'json'
 			});
@@ -139,14 +139,22 @@ var Dashboard = {
 
 	addItem: function( item_info ){
 
-		// Add item
-		this.items.push( item_info.item_id );
-
+		// Add dynamic items
+		if( item_info.display_type == 'dynamic' ){
+			this.items.dynamic.push( item_info.id );
+		}
+		
 		$item_container = $( '<figure />' )
 			.addClass( this.__getItemClasses( item_info ) )
 			.css( 'backgroundColor', item_info.bg_color )
 			.data({
-				'id': item_info.item_id
+				'id': item_info.id,
+				'did': item_info.did
+			})
+			.attr({
+				'data-id': item_info.id,
+				'data-did': item_info.did,
+				'data-display-type': item_info.display_type
 			})
 			.bind( 'taphold', this.__on_long_click );
 
@@ -200,11 +208,45 @@ var Dashboard = {
 					columnWidth: this.__calc_col_width()
 				}
 			});
+
+		// After item loaded
+		this._afterItemLoaded( item_info );
+	},
+
+	updateItem: function( item_info ){
+
+		// Update title
+		if( item_info.title !== undefined && item_info.title.length > 0 ){
+			$( 'figure[data-did="' + item_info.did + '"] > .title' ).text( item_info.title );
+		}
+
+		// Update body
+		if( item_info.body !== undefined && item_info.body.length > 0 ){
+			$( 'figure[data-did="' + item_info.did + '"] > .body' ).html( item_info.body );
+		}
+
+		// After item loaded
+		this._afterItemLoaded( item_info );
 	},
 
 	setLoader: function( status ){
 
 		this.loading = status;
+	},
+
+	_afterItemLoaded: function( item_info ){
+
+		var $figure = $( 'figure[data-did="' + item_info.did + '"]' ),
+			$slider = $( 'input[data-provide="slider"]', $figure );
+
+		// Slider
+		$slider.bootstrapSlider();
+		$slider.on("slideStop", function(slideEvt) {
+
+			var $item = $(this).closest('figure').data();
+
+			$.get( 'ajax/zitems/exact/' + $item.id + '/' + slideEvt.value );
+		});
 	},
 
 	__getItemClasses: function( item_info ){
@@ -224,7 +266,6 @@ var Dashboard = {
 		}
 
 		return classes.join( ' ' );
-
 	},
 
 	__calculateItemSizes: function( $item ){

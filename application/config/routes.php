@@ -52,6 +52,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['api/add/history/(:any)'] = 'api/add_history/$1';
 
-$route['default_controller'] = 'dashboard';
+$route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
