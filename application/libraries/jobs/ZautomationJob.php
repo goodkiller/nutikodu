@@ -2,8 +2,6 @@
 
 class ZautomationJob extends Jobs
 {
-	protected $last_run_date = 0;
-
 	function __construct(){
 		parent::__construct();
 	}
@@ -33,13 +31,6 @@ class ZautomationJob extends Jobs
 						$this->last_run_date = max( $this->job_info->last_run_date, $device[ 'updateTime' ] );
 					}
 				}
-			}
-
-			if( $this->last_run_date > 0)
-			{
-				$this->CI->db->set( 'last_run_date', 'TO_TIMESTAMP(' . $this->last_run_date . ')', FALSE );
-				$this->CI->db->where( 'name', $this->job_info->name );
-				$this->CI->db->update( 'jobs' );
 			}
 
 			return TRUE;

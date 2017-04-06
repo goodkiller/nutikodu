@@ -3,10 +3,16 @@
 class Jobs
 {
 	var $CI;
+	var $last_run_date = 0;
+
 	protected $job_info = array();
 	
-	function __construct(){
+	function __construct()
+	{
 		$this->CI =& get_instance();
+
+		// Set last run date as now
+		$this->last_run_date = time();
 	}
 
 	function run(){
@@ -41,7 +47,19 @@ class Jobs
 				// Check if method exists
 				if(method_exists($class, 'run'))
 				{
-					return $class->set_job_info( $job_info )->run();
+					// Job run was successful
+					if( $class->set_job_info( $job_info )->run() )
+					{
+						// Update last run date
+						if( $this->last_run_date > 0)
+						{
+							$this->CI->db->set( 'last_run_date', 'TO_TIMESTAMP(' . $this->last_run_date . ')', FALSE );
+							$this->CI->db->where( 'name', $job_info->name );
+							$this->CI->db->update( 'jobs' );
+
+							return TRUE;
+						}
+					}
 				}
 			}
 
