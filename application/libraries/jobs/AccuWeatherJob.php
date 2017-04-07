@@ -3,6 +3,7 @@
 class AccuWeatherJob extends Jobs
 {
 	protected $api_url = 'https://apidev.accuweather.com';
+	protected $delay = 300;
 
 	function __construct(){
 		parent::__construct();
@@ -10,7 +11,7 @@ class AccuWeatherJob extends Jobs
 
 	function run()
 	{
-		if( strtotime( $this->job_info->last_run_date ) < time() - 300 )
+		if( strtotime( $this->job_info->last_run_date ) < time() - $this->delay )
 		{
 			// Get weather item
 			$item_info = $this->get_weather_item();
@@ -25,7 +26,7 @@ class AccuWeatherJob extends Jobs
 		}
 		else
 		{
-			log_message( 'debug', '[JOB] AccuWeather: wait ...' );
+			log_message( 'debug', '[JOB] AccuWeather: WAITING ...' );
 		}
 
 		return FALSE;

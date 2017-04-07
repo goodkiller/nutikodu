@@ -16,120 +16,203 @@ class PioneerVSX extends VirtualDevice
 
 	function get_item_body(){
 
-		$last_value = $this->CI->zitem->get_last_value( $this->item_info->id );
+		$last_value_info = $this->CI->zitem->get_last_value( $this->item_info->id );
 
 		$item_content = '<i class="fa fa-chevron-up" aria-hidden="true" data-id="' . $this->item_info->id . '" data-command="increase"></i>';
-		$item_content .= '<div class="dbvalue">' . $last_value . 'dB</div>';
+		$item_content .= '<div class="dbvalue">' . $this->get_db( $last_value_info->value ) . $this->item_info->unit . '</div>';
 		$item_content .= '<i class="fa fa-chevron-down" aria-hidden="true" data-id="' . $this->item_info->id . '" data-command="decrease"></i>';
 
 		return $item_content;
 	}
 
+	/**
+	 * Power on
+	 * @method  on
+	 * @author  Marko Praakli
+	 * @date    2017-04-07
+	 */
 	function on()
 	{
-		$command = 'PO';
+		return $this->send_command( array( 'PO' ) );
 	}
 
+	/**
+	 * Power off
+	 * @method  off
+	 * @author  Marko Praakli
+	 * @date    2017-04-07
+	 */
 	function off()
 	{
-		$command = 'PF';
+		return $this->send_command( array( 'PF' ) );
 	}
 
+	/**
+	 * Volume UP
+	 * @method  increase
+	 * @author  Marko Praakli
+	 * @date    2017-04-07
+	 */
 	function increase()
 	{
-		$command = 'VU';
-
-		$response = $this->send_command( $command );
-
-		print_r($response);
+		return $this->send_command( array( 'VU' ) );
 	}
 
+	/**
+	 * Volume DOWN
+	 * @method  decrease
+	 * @author  Marko Praakli
+	 * @date    2017-04-07
+	 */
 	function decrease()
 	{
-		$command = 'VD';
-
-		$response = $this->send_command( $command );
-
-		print_R($response);
+		return $this->send_command( array( 'VD' ) );
 	}
 
+	/**
+	 * Mute
+	 * @method  mute
+	 * @author  Marko Praakli
+	 * @date    2017-04-07
+	 */
 	function mute()
 	{
-		$command = 'MO';
+		return $this->send_command( array( 'MO' ) );
 	}
 
+	/**
+	 * Unmute
+	 * @method  unmute
+	 * @author  Marko Praakli
+	 * @date    2017-04-07
+	 */
 	function unmute()
 	{
-		$command = 'MF';
+		return $this->send_command( array( 'MF' ) );
 	}
 
-	function get_power()
+	/**
+	 * Send commands
+	 * @method  send
+	 * @author  Marko Praakli
+	 * @date    2017-04-07
+	 */
+	function send( $commands = array() )
 	{
-		$command = '?P';
+		if( !empty($commands) )
+		{
+			return $this->send_command( $commands );
+		}		
 
-		$response = $this->send_command( $command );
-
-		print_R($response);
+		return FALSE;
 	}
 
-	function get_input()
+	/**
+	 * Send command to Pioneer VSX via Telnet
+	 * @method  send_command
+	 * @author  Marko Praakli
+	 * @date    2017-04-07
+	 */
+	private function send_command( $commands = array() )
 	{
-		$command = '?F';
+		$responses = array();
 
-		$response = $this->send_command( $command );
-
-		print_R($response);
-	}
-
-	private function send_command( $command = '' )
-	{
-		$response = NULL;
+		log_message( 'debug', '[PioneerVSX] Connect to : ' . $this->CI->settings->get( 'pioneer_vsx_hostname' ) . ':'. $this->port );
 		
 		if ( !$fp = @fsockopen( $this->CI->settings->get( 'pioneer_vsx_hostname' ), $this->port, $errno, $errstr, $this->timeout) ) 
         {
-            return $this->parse_response( $response );
+        	log_message( 'debug', '[PioneerVSX] Connection failed.' );
+
+            return $this->parse_response( $responses );
         }
         else
         {
+        	log_message( 'debug', '[PioneerVSX] Connected.' );
+
             if( $fp )
 			{
-				fputs($fp, $command . "\r\n");
+				foreach( $commands as $item_id => $cmd )
+				{
+					log_message( 'debug', '[PioneerVSX] Send command: ' . $cmd . ', Item ID: ' . $item_id );
 
-				$response = fgets($fp);
+					fputs($fp, $cmd . "\r\n");
+
+					$responses[ $item_id ] = fgets($fp);
+				}
 
 				fclose($fp);
 			}
 
-			return $this->parse_response( $response );
+			return $this->parse_response( $responses );
         }
 	}
 
-	private function parse_response( $response = NULL ){
+	/**
+	 * Parse Pioneer VSX command resposnes
+	 * @method  parse_response
+	 * @author  Marko Praakli
+	 * @date    2017-04-07
+	 */
+	private function parse_response( $responses = array() )
+	{
+		$parsed_responses = array();
 
-		$response = trim( $response );
-		$response = strtoupper( $response );
+		// Fetch all commands
+		foreach( $responses as $item_id => $resp )
+		{
+			$resp = trim( $resp );
+			$resp = strtoupper( $resp );
 
-		// Volume parse
-		if( preg_match( '/^VOL([0-9]{3})$/', $response, $out ) ){
-			return $out[1];
+			log_message( 'debug', '[PioneerVSX] Command response: ' . $resp . ', Item ID: ' . $item_id );
+
+			// Volume parse 
+			// VOL000 - VOL131
+			if( preg_match( '/^VOL([0-9]{3})$/', $resp, $out ) ){
+				$parsed_responses[ $item_id ] = (int)$out[1];
+			}
+
+			// Power parse
+			// PWR0 - power on
+			// PWR2 - stand by
+			if( preg_match( '/^PWR([0-9]{1})$/', $resp, $out ) ){
+				$parsed_responses[ $item_id ] = (int)$out[1];
+			}
+
+			// Input parse
+			// 00FN 	PHONO
+			// 01FN 	CD
+			// 03FN 	CD-R/TAPE
+			// 04FN 	DVD
+			// 05FN 	TV/SAT
+			// 10FN 	VIDEO 1
+			// 14FN 	VIDEO 2
+			// 15FN 	DVR/BDR
+			// 17FN 	iPod/USB
+			// 19FN 	HDMI1
+			// 20FN 	HDMI2
+			// 21FN 	HDMI3
+			// 22FN 	HDMI4
+			// 23FN 	HDMI5
+			// 24FN 	HDMI6
+			// 25FN 	BD
+			// 38FN 	NETRADIO
+			if( preg_match( '/^FN([0-9]{2})$/', $resp, $out ) ){
+				$parsed_responses[ $item_id ] = (int)$out[1];
+			}
 		}
 
-		// Power parse
-		if( preg_match( '/^PWR([0-9]{1})$/', $response, $out ) ){
-			return $out[1];
-		}
-
-		return $response;
+		return $parsed_responses;
 	}
 
-	/**
-	 * Force check
-	 * @method  force_check
-	 * @author  Marko Praakli
-	 * @date    2017-02-25
-	 */
-	function force_check()
+	private function get_db( $volume = 0 )
 	{
+		$fromRange = 131 - 0;
+		$toRange = 12 - -65;
+		$scaleFactor = $toRange / $fromRange;
 
+		$tmpValue = $volume - 0;
+		$tmpValue *= $scaleFactor;
+
+		return round( $tmpValue + -65 );
 	}
 }

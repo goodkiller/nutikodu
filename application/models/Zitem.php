@@ -71,17 +71,6 @@ class Zitem extends CI_Model
 		return FALSE;
 	}
 
-	function get_cron_items()
-	{
-		$this->db->from( 'items' );
-		$this->db->where( 'check_delay > 0', NULL, FALSE );
-		$this->db->where( "COALESCE( last_check_date, NOW() - ( ( check_delay + 1 ) * interval '1 sec') ) < NOW() - ( check_delay * interval '1 sec')", NULL, FALSE );
-	
-		$query = $this->db->get();
-
-		return $query->result();
-	}
-
 	function add_history( $item_id = 0, $value = 0, $timestamp = 0, $extra_params = array() )
 	{
 		$item_id = (int)$item_id;
