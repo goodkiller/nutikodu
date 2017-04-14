@@ -92,21 +92,27 @@ class VirtualDevice
 		{
 			if( !empty($item_info->classname) )
 			{
-				// Load library
-				$this->CI->load->library( 'devices/' . $item_info->classname );
-
-				$class = strtolower($item_info->classname);
-				$class = $this->CI->$class;
-
-				// Check if sensor library is loaded
-				if(class_exists($item_info->classname))
+				// Check if library exists
+				if( file_exists( APPPATH . '/libraries/devices/' . $item_info->classname . '.php' ) )
 				{
-					// Check if method exists
-					if(method_exists($class, $call))
+					// Load library
+					$this->CI->load->library( 'devices/' . $item_info->classname );
+
+					$class = strtolower($item_info->classname);
+					$class = $this->CI->$class;
+
+					// Check if sensor library is loaded
+					if(class_exists($item_info->classname))
 					{
-						return $class->set_item_info( $item_info )->$call( $params );
+						// Check if method exists
+						if(method_exists($class, $call))
+						{
+							return $class->set_item_info( $item_info )->$call( $params );
+						}
 					}
 				}
+				
+				return $this->set_item_info( $item_info )->$call( $params );
 			}
 		}
 
