@@ -39,6 +39,15 @@ body {
 	text-align: center;
 }
 
+
+.grid figure .body .footer {
+	font-size: 12px;
+	margin: 0;
+	bottom: 0;
+	position: absolute;
+	width: 100%
+}
+
 /* 1x1 */
 .grid figure.size-1x1 .title {
 	font-size: 16px;

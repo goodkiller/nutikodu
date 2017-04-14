@@ -16,7 +16,9 @@ class WaterMeter extends VirtualDevice
 		// Get item last value
 		if( $last_value_info = $this->CI->zitem->get_last_value( $this->item_info->id ) )
 		{
-			return round( $last_value_info->value, 1 ) . $this->item_info->unit;
+			$date = date( 'd.m.y', strtotime($last_value_info->create_date) );
+
+			return round( $last_value_info->value, 1 ) . $this->item_info->unit . '<p class="footer">' . $date . '</p>';
 		}
 		else
 		{
