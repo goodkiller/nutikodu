@@ -1,1 +1,1 @@
-<input type="text" data-provide="slider" data-slider-min="0" data-slider-max="99" data-slider-step="1" data-slider-value="3">
+<input type="text" data-provide="slider" data-slider-min="0" data-slider-max="99" data-slider-step="1" data-slider-value="<?php echo $last_value_info->value; ?>">

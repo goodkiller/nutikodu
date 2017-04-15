@@ -16,6 +16,12 @@ var Dashboard = {
 		}
 	},
 
+	events: {
+		long_click: {
+			enabled: true
+		}
+	},
+
 	init: function( container ){
 
 		var parent = this;
@@ -236,17 +242,27 @@ var Dashboard = {
 
 	_afterItemLoaded: function( item_info ){
 
-		var $figure = $( 'figure[data-did="' + item_info.did + '"]' ),
+		var parent = this,
+			$figure = $( 'figure[data-did="' + item_info.did + '"]' ),
 			$slider = $( 'input[data-provide="slider"]', $figure );
 
 		// Slider
 		$slider.bootstrapSlider();
-		$slider.on("slideStop", function(slideEvt) {
+		$slider
+			.on("slideStart", function(){
 
-			var $item = $(this).closest('figure').data();
+				// Disable long click event
+				parent.events.long_click.enabled = false;
+			})
+			.on("slideStop", function(slideEvt){
 
-			$.get( 'ajax/zitems/exact/' + $item.id + '/' + slideEvt.value );
-		});
+				var $item = $(this).closest('figure').data();
+
+				$.get( 'ajax/zitems/exact/' + $item.id + '/' + slideEvt.value );
+
+				// Enable long click event
+				parent.events.long_click.enabled = true;
+			});
 	},
 
 	__getItemClasses: function( item_info ){
@@ -292,13 +308,16 @@ var Dashboard = {
 
 	__on_long_click: function( e ){
 
-		var $item = $( this );
+		if( Dashboard.events.long_click.enabled )
+		{
+			var $item = $( this );
 
-		Dialog.open(
-			'#item_settings',
-			$item.find( '.title' ).text(), 
-			'ajax/settings/item/' + $item.data( 'id' ) 
-		);
+			Dialog.open(
+				'#item_settings',
+				$item.find( '.title' ).text(), 
+				'ajax/settings/item/' + $item.data( 'id' ) 
+			);
+		}
 	},
 
 	__on_single_click: function( e ){
