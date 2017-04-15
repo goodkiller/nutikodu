@@ -65,7 +65,9 @@ class Zitems extends CI_Controller {
 
 	function toggle( $item_id = 0 )
 	{
-		$status = NULL;
+		$response = array(
+			'status' => 'ERROR'
+		);
 
 		// Get item last value
 		$last_value_info = $this->zitem->get_last_value( $item_id );
@@ -84,16 +86,26 @@ class Zitems extends CI_Controller {
 			$status = $this->virtualdevice->call( $item_id, 'off' );
 		}
 
-		return $status;
+		$response[ 'status' ] = $status ? 'OK' : 'ERROR';
+
+		$this->output( $response );
 	}
 
 	function exact( $item_id = 0, $value = 0 )
 	{
+		$response = array(
+			'status' => 'ERROR'
+		);
+
 		$item_info = $this->zitem->get( $item_id );
 
 		if( !empty($item_info) )
 		{
-			echo $this->virtualdevice->call( $item_id, 'exact', $value );
+			$status = $this->virtualdevice->call( $item_id, 'exact', $value );
 		}
+
+		$response[ 'status' ] = $status ? 'OK' : 'ERROR';
+
+		$this->output( $response );
 	}
 }

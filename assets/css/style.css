@@ -2,6 +2,10 @@
 	box-sizing: border-box;
 }
 
+html, body, .container-fluid, .row {
+	height: 100%;
+}
+
 body {
 	font-family: 'Roboto', sans-serif;
 	margin: 0;
@@ -9,12 +13,22 @@ body {
 	background-color: #000;
 }
 
+/* Bootstrap */
+.row > div {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
 .btn-group-xlg > .btn, .btn-xlg {
-    font-size: 1.55rem;
-    padding: 1.05rem 1.8rem;
+	font-size: 1.55rem;
+	padding: 1.05rem 1.8rem;
 }
 
 /* ---- grid ---- */
+
+.grid {
+	margin-top: 5px;
+}
 
 .grid figure {
 	float: left;
@@ -28,17 +42,15 @@ body {
 .grid figure .title {
 	text-align: center;
 	white-space: nowrap;
-    overflow: hidden;
+	overflow: hidden;
 	width: inherit;
-    text-overflow: ellipsis;
-    padding: 5px;
+	text-overflow: ellipsis;
+	padding: 5px;
 }
-
 
 .grid figure .body {
 	text-align: center;
 }
-
 
 .grid figure .body .footer {
 	font-size: 12px;
@@ -46,6 +58,40 @@ body {
 	bottom: 0;
 	position: absolute;
 	width: 100%
+}
+
+/* Sidebar */
+.sidebar {
+	background-color: #384046;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.sidebar .alert {
+	margin-bottom: 5px;
+}
+
+.sidebar .alert-info {
+	background-color: #606E78;
+	border-color: #717e87;
+	color: #FFF;
+}
+
+.sidebar .alert-warning {
+	background-color: #FF845B;
+	border-color: #fc9d7e;
+	color: #FFF;
+}
+
+.sidebar .alert-danger {
+	background-color: #FF3333;
+	border-color: #fc5d5d;
+	color: #FFF;
 }
 
 /* 1x1 */
@@ -115,20 +161,6 @@ body {
 	perspective: 1000px;
 }
 
-/* Slider */
-.slider.slider-horizontal {
-	width: 170px;
-}
-
-.slider.slider-horizontal .slider-track {
-    height: 15px;
-}
-
-.slider-handle {
-    width: 25px;
-    height: 25px;
-}
-
 @keyframes shake {
 	10%, 90% {
 		transform: translate3d(-1px, 0, 0);
@@ -146,3 +178,35 @@ body {
 		transform: translate3d(4px, 0, 0);
 	}
 }
+
+/* Blink */
+.blink_fx {
+	animation: blinker 1s linear infinite;
+}
+
+.fast_blink_fx {
+	animation: blinker 0.5s linear infinite;
+}
+
+.slow_blink_fx {
+	animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {  
+	50% { opacity: 0; }
+}
+
+/* Slider */
+.slider.slider-horizontal {
+	width: 170px;
+}
+
+.slider.slider-horizontal .slider-track {
+	height: 15px;
+}
+
+.slider-handle {
+	width: 25px;
+	height: 25px;
+}
+

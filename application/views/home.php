@@ -17,6 +17,7 @@
 	<link rel="stylesheet" href="assets/css/devices/AccuWeather.css" />
 	<link rel="stylesheet" href="assets/css/devices/BinarySensor.css" />
 	<link rel="stylesheet" href="assets/css/devices/PioneerVSX.css" />
+	<link rel="stylesheet" href="assets/css/devices/RemoteSwitch.css" />
 	<script src="assets/js/lib/jquery.min.js"></script>
 	<script src="assets/js/lib/jquery.mobile.min.js"></script>
 	<script src="assets/js/lib/tether.min.js"></script>
@@ -31,7 +32,16 @@
 <body>
 <div class="container-fluid">
 	<div class="row">
-		<div class="grid"></div>
+		<div class="col-sm-10">
+			<div class="grid"></div>
+		</div>
+		<div class="col-sm-2 sidebar">
+			<!--
+			<div class="alert alert-info" role="alert">See alert!</div>
+			<div class="alert alert-warning" role="alert">See alert!</div>
+			<div class="alert alert-danger fast_blink_fx" role="alert">See alert!</div>
+			-->
+		</div>
 	</div>
 </div>
 
