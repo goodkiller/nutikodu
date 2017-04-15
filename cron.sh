@@ -1,10 +1,12 @@
 #!/bin/bash
 
+dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 for i in {1..12}
 do
-	echo "Start Cron jobs"
+        echo "Start Cron jobs"
 
-	php index.php Cron jobs
+        php "$dir/index.php" Cron jobs
 
-	sleep 5
+        sleep 5
 done
