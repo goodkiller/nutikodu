@@ -45,6 +45,43 @@ ALTER TABLE public.history OWNER TO nutikodu;
 CREATE INDEX "IDX_HIST_ITEMID" ON public.history USING btree (item_id);
 CREATE INDEX "IDX_HIST_CDATE" ON public.history USING btree (create_date);
 
+-- public.rules
+CREATE TABLE public.rules
+(
+	id integer NOT NULL DEFAULT nextval('rules_id_seq'::regclass),
+	name character varying(200) NOT NULL,
+	condition json NOT NULL,
+	execution json NOT NULL,
+	enabled boolean NOT NULL DEFAULT true,
+	create_date timestamp with time zone NOT NULL DEFAULT now(),
+	CONSTRAINT "PK_RULEID" PRIMARY KEY (id)
+);
+ALTER TABLE public.rules OWNER TO nutikodu;
+
+-- public.alerts
+CREATE TABLE public.alerts
+(
+	id integer NOT NULL DEFAULT nextval('alerts_id_seq'::regclass),
+	rule_id integer NOT NULL,
+	validation boolean,
+	message text NOT NULL,
+	create_date timestamp with time zone NOT NULL DEFAULT now(),
+	CONSTRAINT "PK_ALERTID" PRIMARY KEY (id),
+	CONSTRAINT "FK_ALERTRULEID" FOREIGN KEY (rule_id) REFERENCES public.rules (id) MATCH SIMPLE ON UPDATE CASCADE ON DELETE CASCADE
+);
+ALTER TABLE public.alerts OWNER TO nutikodu;
+CREATE INDEX "IDX_ALERTRULEID" ON public.alerts USING btree (rule_id);
+
+-- public.jobs
+CREATE TABLE public.jobs
+(
+	name character varying(20) NOT NULL,
+	last_run_date timestamp with time zone NOT NULL DEFAULT now(),
+	enabled boolean DEFAULT true,
+	classname character varying(20) NOT NULL,
+	CONSTRAINT "PK_JOBS_NAME" PRIMARY KEY (name)
+);
+ALTER TABLE public.jobs OWNER TO nutikodu;
 
 -- Zway settings
 INSERT INTO settings (key) VALUES('zway_controller_addr');

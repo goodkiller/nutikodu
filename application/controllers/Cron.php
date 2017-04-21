@@ -28,6 +28,13 @@ class Cron extends CI_Controller {
 		}
 	}
 
+	public function rules()
+	{
+		$this->load->model( 'rules' );
+
+		$this->rules->check_all();
+	}
+
 	private function get_status()
 	{
 		$lock_status = (int)$this->db->get_where( 'settings', array( 'key' => 'cron_lock' ) )->row( 'val' );
