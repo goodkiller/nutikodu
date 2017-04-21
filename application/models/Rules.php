@@ -42,8 +42,6 @@ class Rules extends CI_Model
 
 	public function parse( $rule = array() )
 	{
-		echo '<pre>';
-
 		$this->rule = $rule;
 		$this->sql_condition = '';
 		
@@ -51,18 +49,16 @@ class Rules extends CI_Model
 
 		$this->parse_group( $conditions_array );
 
-		echo $this->sql_condition;
-$this->trigger_action( $rule->execution );
 		// Validate rule
 		if( $this->validate() )
 		{
 			// Trigger rule
-			$this->trigger_action( $rule->execution );
+			return $this->trigger_action( $rule->execution );
 		}
 		else
 		{
 			// Deactivate rule
-			$this->deactivate();
+			return $this->deactivate();
 		}
 	}
 
@@ -73,8 +69,6 @@ $this->trigger_action( $rule->execution );
 		$i = count($condition[ 'rules' ]) - 1;
 		foreach( $condition[ 'rules' ] as $rule )
 		{
-			print_R($rule);
-
 			// Parse value with operator
 			$value = $this->parse_value( $rule[ 'type' ], $rule[ 'operator' ], $rule[ 'value' ] );
 
