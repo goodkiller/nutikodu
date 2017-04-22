@@ -1,5 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+define( 'SPACE', ' ' );
+
 class Rules extends CI_Model
 {
 	protected $rule = array();
@@ -69,16 +71,24 @@ class Rules extends CI_Model
 		$i = count($condition[ 'rules' ]) - 1;
 		foreach( $condition[ 'rules' ] as $rule )
 		{
-			// Parse value with operator
-			$value = $this->parse_value( $rule[ 'type' ], $rule[ 'operator' ], $rule[ 'value' ] );
-
-			if( !empty($value) )
+			// Rule group?
+			if( isset($rule['rules']) && !empty($rule['rules']) )
 			{
-				$this->sql_condition .= $this->parse_field( $rule[ 'field' ], $rule[ 'id' ] ) . ' ' . $value . ' ';
+				$this->sql_condition .= $this->parse_group( $rule ) . SPACE;
+			}
+			else
+			{
+				// Parse value with operator
+				$value = $this->parse_value( $rule[ 'type' ], $rule[ 'operator' ], $rule[ 'value' ] );
 
-				if( $i > 0 ){
-					$this->sql_condition .= $condition[ 'condition' ] . ' ';
+				if( !empty($value) )
+				{
+					$this->sql_condition .= $this->parse_field( $rule[ 'field' ], $rule[ 'id' ] ) . SPACE . $value . SPACE;
 				}
+			}
+
+			if( $i > 0 ){
+				$this->sql_condition .= $condition[ 'condition' ] . SPACE;
 			}
 
 			$i--;
@@ -89,13 +99,15 @@ class Rules extends CI_Model
 
 	private function validate()
 	{
-		$query = $this->db->query( 'SELECT ( ' . $this->sql_condition . '  ) AS status', array(
+		$query = $this->db->query( 'SELECT ' . $this->sql_condition . ' AS status', array(
 			(int)$this->rule->id 
 		));
 
-		log_message( 'debug', '[RULE] Validate: ' . $this->db->last_query() );
+		$status = $query->row( 'status' );
 
-		if( $query->row( 'status' ) == 't' ){
+		log_message( 'debug', '[RULE] Validate: "' . $this->db->last_query() . '" = ' . $status );
+
+		if( $status == 't' ){
 			return TRUE;
 		}
 
@@ -109,6 +121,8 @@ class Rules extends CI_Model
 		{
 			// Activate rule
 			$this->activate();
+
+			log_message( 'debug', '[RULE] Execute trigger: ' . $execution );
 
 			$execution = json_decode( $execution, TRUE );
 
@@ -169,34 +183,35 @@ class Rules extends CI_Model
 
 	private function parse_value( $type = '', $operator = '', $value = '' )
 	{
-		// Time parser
-		if( $type == 'time' ){
-			return $this->get_operator( $operator ) . ' ' . $this->db->escape( $value );
+		$casted_values = array();
+
+		// If operator is between
+		if( $operator == 'between' ){
+			$casted_values = array( $this->db->escape( $value[0] ), $this->db->escape( $value[1] ) );
+		}
+		else{
+			$casted_values = array( $this->db->escape( $value ) );
 		}
 
-		// Double
-		elseif( $type == 'double' ){
-			return $this->get_operator( $operator ) . ' ' . (float)$this->db->escape_str( $value );
+		if( $type == 'integer' ){
+			$casted_values = array_map( 'intval', $casted_values );
 		}
 
-		// Integer
-		elseif( $type == 'integer' ){
-			return $this->get_operator( $operator ) . ' ' . (int)$this->db->escape_str( $value );
-		}
-
-		return NULL;
+		return vsprintf( $this->get_operator( $operator ), $casted_values );
 	}
 
 	private function get_operator( $operator = '' )
 	{
 		switch( $operator )
 		{
-			case 'equal':				return "=";				break;
-			case 'not_equal':			return "!=";				break;
-			case 'less':				return "<";				break;
-			case 'less_or_equal':		return "<=";				break;
-			case 'greater':				return ">";				break;
-			case 'greater_or_equal':	return ">=";				break;
+			case 'equal':				return "= %s";						break;
+			case 'not_equal':			return "!= %s";						break;
+			case 'less':				return "< %s";						break;
+			case 'less_or_equal':		return "<= %s";						break;
+			case 'greater':				return "> %s";						break;
+			case 'greater_or_equal':	return ">= %s";						break;
+			case 'greater_or_equal':	return ">= %s";						break;
+			case 'between':				return "BETWEEN %s AND %s";			break;
 		}
 
 		return NULL;
