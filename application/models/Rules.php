@@ -191,12 +191,12 @@ class Rules extends CI_Model
 	{
 		switch( $operator )
 		{
-			case 'equal':				return "=";		break;
-			case 'not_equal':			return "!=";	break;
-			case 'less':				return "<";		break;
-			case 'less_or_equal':		return "<=";	break;
-			case 'greater':				return ">";		break;
-			case 'greater_or_equal':	return ">=";	break;
+			case 'equal':				return "= %s";				break;
+			case 'not_equal':			return "!= %s";				break;
+			case 'less':				return "< %s";				break;
+			case 'less_or_equal':		return "<= %s";				break;
+			case 'greater':				return "> %s";				break;
+			case 'greater_or_equal':	return ">= %s";				break;
 		}
 
 		return NULL;

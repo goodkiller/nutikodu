@@ -11,7 +11,11 @@ class Cron extends CI_Controller {
 	 */
 	public function run()
 	{
+		$end_message = '[CRON] End cron: ';
+
 		log_message( 'debug', '[CRON] Start cron.' );
+
+		$this->db->trans_begin();
 	
 		// Check status
 		if( $this->get_status() === 0 )
@@ -27,13 +31,26 @@ class Cron extends CI_Controller {
 
 			// Unclock cron
 			$this->unlock();
-
-			log_message( 'debug', '[CRON] End cron.' );
 		}
 		else
 		{
-			log_message( 'debug', '[CRON] End cron: locked!' );
+			$end_message .= 'LOCKED, ';
 		}
+
+		if ($this->db->trans_status() === FALSE)
+		{
+			$this->db->trans_rollback();
+
+			$end_message .= 'ERROR, rollback!';
+		}
+		else
+		{
+			$this->db->trans_commit();
+
+			$end_message .= 'OK';
+		}
+
+		log_message( 'debug', $end_message );
 	}
 
 	/**
