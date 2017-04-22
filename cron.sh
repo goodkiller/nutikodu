@@ -6,7 +6,7 @@ for i in {1..12}
 do
         echo "Start Cron jobs"
 
-        php "$dir/index.php" Cron jobs
+        php "$dir/index.php" Cron run
 
         sleep 5
 done

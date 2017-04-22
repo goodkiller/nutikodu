@@ -3,7 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Cron extends CI_Controller {
 
-	public function jobs()
+	/**
+	 * Run cron
+	 * @method  run
+	 * @author  Marko Praakli
+	 * @date    2017-04-22
+	 */
+	public function run()
 	{
 		log_message( 'debug', '[CRON] Start cron.' );
 	
@@ -13,9 +19,11 @@ class Cron extends CI_Controller {
 			// Lock cron
 			$this->lock();
 
-			$this->load->library( 'Jobs' );
+				// Run jobs
+				$this->jobs();
 
-			$this->jobs->check_all();
+				// Run rules
+				$this->rules();
 
 			// Unclock cron
 			$this->unlock();
@@ -28,13 +36,38 @@ class Cron extends CI_Controller {
 		}
 	}
 
-	public function rules()
+	/**
+	 * Check all jobs
+	 * @method  jobs
+	 * @author  Marko Praakli
+	 * @date    2017-04-22
+	 */
+	private function jobs()
+	{
+		$this->load->library( 'Jobs' );
+
+		return $this->jobs->check_all();
+	}
+
+	/**
+	 * Check all rules
+	 * @method  rules
+	 * @author  Marko Praakli
+	 * @date    2017-04-22
+	 */
+	private function rules()
 	{
 		$this->load->model( 'rules' );
 
-		$this->rules->check_all();
+		return $this->rules->check_all();
 	}
 
+	/**
+	 * Get cron status
+	 * @method  get_status
+	 * @author  Marko Praakli
+	 * @date    2017-04-22
+	 */
 	private function get_status()
 	{
 		$lock_status = (int)$this->db->get_where( 'settings', array( 'key' => 'cron_lock' ) )->row( 'val' );
@@ -42,6 +75,12 @@ class Cron extends CI_Controller {
 		return $lock_status;
 	}
 
+	/**
+	 * Lock cron
+	 * @method  lock
+	 * @author  Marko Praakli
+	 * @date    2017-04-22
+	 */
 	private function lock()
 	{
 		// Add lock
@@ -54,6 +93,12 @@ class Cron extends CI_Controller {
 		return TRUE;
 	}
 
+	/**
+	 * Unlock cron
+	 * @method  unlock
+	 * @author  Marko Praakli
+	 * @date    2017-04-22
+	 */
 	private function unlock()
 	{
 		// Remove lock
