@@ -28,7 +28,11 @@ class Triggers
 				// Check if method exists
 				if(method_exists($class, 'execute'))
 				{
-					return $class->execute( $execution );
+					$status = $class->execute( $execution );
+
+					log_message( 'debug', '[TRIGGER] Execute: "' . json_encode($execution) . '" = ' . $status ? 't' : 'f' );
+
+					return $status;
 				}
 			}
 		}
