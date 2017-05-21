@@ -571,12 +571,16 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
-	"expanded_folders":
-	[
-		"/home/marko/Workspace/www/nutikodu"
-	],
 	"file_history":
 	[
+		"/home/marko/Workspace/www/nutikodu/application/libraries/Triggers.php",
+		"/home/marko/Workspace/www/nutikodu/application/libraries/triggers/MultiswitchTrigger.php",
+		"/home/marko/Workspace/www/nutikodu/application/controllers/Cron.php",
+		"/home/marko/Workspace/www/nutikodu/application/models/Rules.php",
+		"/home/marko/Workspace/www/nutikodu/application/libraries/triggers/EmailTrigger.php",
+		"/home/marko/.config/sublime-text-3/Packages/Pretty JSON/Pretty JSON.sublime-settings",
+		"/home/marko/Workspace/www/nutikodu/cron.sh",
+		"/home/marko/Workspace/www/nutikodu/system/core/Loader.php",
 		"/home/marko/Workspace/GlobalReader/sql/17/17.16.sql",
 		"/home/marko/Workspace/GlobalReader/sql/17/17.16.1.sql",
 		"/home/marko/Workspace/GlobalReader/sql/17/untitled.xml",
@@ -587,7 +591,6 @@
 		"/home/marko/Workspace/GlobalReader/sql/17/17.04.sql",
 		"/home/marko/Workspace/GlobalReader/sql/17/17.14.sql",
 		"/home/marko/Desktop/sign_csr_20170310_member_EE_COM_12647055.pem",
-		"/home/marko/.config/sublime-text-3/Packages/Pretty JSON/Pretty JSON.sublime-settings",
 		"/home/marko/Workspace/eLasteaed/elasteaed/compilers/compiler.jar",
 		"/tmp/mozilla_marko0/el.sk.crt",
 		"/home/marko/Workspace/GlobalReader/sql/17/17.10.sql",
@@ -626,7 +629,6 @@
 		"/home/marko/Workspace/www/nutikodu/assets/js/dialog.js",
 		"/home/marko/Workspace/www/nutikodu/application/views/dashboard.php",
 		"/home/marko/Workspace/www/nutikodu/application/models/Miapi.php",
-		"/home/marko/Workspace/www/nutikodu/system/core/Loader.php",
 		"/home/marko/Workspace/www/nutikodu/application/core/MY_Log.php",
 		"/home/marko/Workspace/www/nutikodu/install.sql",
 		"/home/marko/Workspace/www/nutikodu/application/libraries/devices/AccuWeather.php",
@@ -698,13 +700,7 @@
 		"/home/marko/Workspace/insuliin/features-content-boxes-icon-left.html",
 		"/home/marko/Workspace/insuliin/features-content-boxes-icon-small.html",
 		"/home/marko/Workspace/insuliin/features-content-boxes.html",
-		"/home/marko/Workspace/insuliin/features-dividers.html",
-		"/home/marko/Workspace/insuliin/features-footer-options-2.html",
-		"/home/marko/Workspace/insuliin/features-footer-options.html",
-		"/home/marko/Workspace/insuliin/features-forms.html",
-		"/home/marko/Workspace/insuliin/features-header-1.html",
-		"/home/marko/Workspace/insuliin/features-header-2.html",
-		"/home/marko/Workspace/insuliin/features-header-3.html"
+		"/home/marko/Workspace/insuliin/features-dividers.html"
 	],
 	"find":
 	{
@@ -1200,7 +1196,7 @@
 				"AjaxPlan2"
 			]
 		],
-		"width": 458.0
+		"width": 395.0
 	},
 	"selected_group": 0,
 	"settings":

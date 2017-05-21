@@ -210,7 +210,6 @@ class Rules extends CI_Model
 			case 'less_or_equal':		return "<= %s";						break;
 			case 'greater':				return "> %s";						break;
 			case 'greater_or_equal':	return ">= %s";						break;
-			case 'greater_or_equal':	return ">= %s";						break;
 			case 'between':				return "BETWEEN %s AND %s";			break;
 		}
 
