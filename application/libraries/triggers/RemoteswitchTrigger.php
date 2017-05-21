@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class RemoteSwitchTrigger extends Triggers
+class RemoteswitchTrigger extends Triggers
 {
 	function __construct(){
 		parent::__construct();
