@@ -52,6 +52,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 $route['api/add/history/(:any)'] = 'api/add_history/$1';
 
-$route['default_controller'] = 'home';
+if( $_SERVER['HTTP_HOST'] == 'vesi.salutee.nutikodu.info' )
+{
+	$route['default_controller'] = 'waterreadings';
+}
+else
+{
+	$route['default_controller'] = 'home';
+}
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
